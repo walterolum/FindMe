@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FindMe - Cavendish University Uganda Lost & Found</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+:root{--primary:#6366f1;--primary-dark:#4f46e5;--primary-light:#a5b4fc;--accent:#8b5cf6;--accent2:#ec4899;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--info:#06b6d4;--dark:#0f172a;--dark2:#1e293b;--dark3:#334155;--glass:rgba(255,255,255,0.08);--glass2:rgba(255,255,255,0.12);--glass-border:rgba(255,255,255,0.15);--text:#f8fafc;--text-muted:#94a3b8;--card-bg:rgba(30,41,59,0.85);--sidebar-bg:rgba(15,23,42,0.95)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 20% 50%,rgba(99,102,241,0.15) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(139,92,246,0.1) 0%,transparent 50%),radial-gradient(circle at 50% 80%,rgba(236,72,153,0.08) 0%,transparent 50%);z-index:-1;animation:bgFloat 20s ease-in-out infinite}
+@keyframes bgFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(-2%,2%)}}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--dark)}::-webkit-scrollbar-thumb{background:var(--primary);border-radius:3px}
+.glass{background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:16px}
+.glass2{background:var(--glass2);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border:1px solid var(--glass-border);border-radius:16px}
+.gradient-text{background:linear-gradient(135deg,var(--primary-light),var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.btn-glass{background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--glass-border);color:var(--text);padding:10px 24px;border-radius:12px;cursor:pointer;font-weight:600;font-size:0.9rem;transition:all .3s ease;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn-glass:hover{background:var(--primary);border-color:var(--primary);transform:translateY(-2px);box-shadow:0 8px 25px rgba(99,102,241,0.4);color:white}
+.btn-glass.btn-primary{background:linear-gradient(135deg,var(--primary),var(--accent));border:none;color:white}
+.btn-glass.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(99,102,241,0.5)}
+.btn-glass.btn-success{background:linear-gradient(135deg,var(--success),#059669);border:none;color:white}
+.btn-glass.btn-danger{background:linear-gradient(135deg,var(--danger),#dc2626);border:none;color:white}
+.btn-glass.btn-warning{background:linear-gradient(135deg,var(--warning),#d97706);border:none;color:white}
+.btn-glass.btn-info{background:linear-gradient(135deg,var(--info),#0891b2);border:none;color:white}
+.btn-glass.btn-sm{padding:6px 14px;font-size:0.8rem;border-radius:8px}
+.btn-glass.btn-lg{padding:14px 32px;font-size:1.05rem;border-radius:14px}
+.input-glass{width:100%;padding:12px 16px;background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);border-radius:12px;color:var(--text);font-size:0.95rem;transition:all .3s ease;font-family:'Inter',sans-serif}
+.input-glass:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(99,102,241,0.2);background:rgba(255,255,255,0.08)}
+.input-glass::placeholder{color:var(--text-muted)}
+select.input-glass{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+select.input-glass option{background:#1e293b;color:#f8fafc;padding:10px}
+select.input-glass option[value=""]{color:#94a3b8}
+textarea.input-glass{resize:vertical;min-height:80px}
+label{display:block;font-weight:500;margin-bottom:6px;font-size:0.85rem;color:var(--text-muted);letter-spacing:0.3px}
+.form-group{margin-bottom:20px}
+.card-3d{background:var(--card-bg);backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:20px;padding:24px;transition:all .4s cubic-bezier(.175,.885,.32,1.275);position:relative;overflow:hidden}
+.card-3d::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent),var(--accent2));opacity:0;transition:opacity .3s ease}
+.card-3d:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.card-3d:hover::before{opacity:1}
+.stat-card{background:var(--card-bg);border:1px solid var(--glass-border);border-radius:20px;padding:24px;text-align:center;transition:all .4s cubic-bezier(.175,.885,.32,1.275);position:relative;overflow:hidden}
+.stat-card::after{content:'';position:absolute;top:-50%;right:-50%;width:100%;height:100%;border-radius:50%;opacity:0.05;transition:all .4s ease}
+.stat-card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+.stat-card:hover::after{transform:scale(2)}
+.stat-card .stat-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.5rem}
+.stat-card h2{font-size:2.2rem;font-weight:800;margin-bottom:4px}
+.stat-card p{color:var(--text-muted);font-size:0.85rem;font-weight:500}
+.navbar-glass{background:rgba(15,23,42,0.9);backdrop-filter:blur(30px);border-bottom:1px solid var(--glass-border);padding:12px 0;position:sticky;top:0;z-index:1000}
+.navbar-inner{max-width:1400px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
+.nav-brand{font-size:1.4rem;font-weight:800;text-decoration:none;display:flex;align-items:center;gap:10px}
+.nav-brand i{font-size:1.6rem}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-links a{color:var(--text-muted);text-decoration:none;padding:8px 14px;border-radius:10px;font-size:0.85rem;font-weight:500;transition:all .3s ease;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:var(--glass)}
+.nav-user{display:flex;align-items:center;gap:12px}
+.nav-avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem}
+.notif-badge{background:var(--danger);color:white;border-radius:50%;width:18px;height:18px;font-size:0.65rem;display:inline-flex;align-items:center;justify-content:center;font-weight:700}
+.table-glass{width:100%;border-collapse:separate;border-spacing:0}
+.table-glass thead th{background:rgba(99,102,241,0.15);padding:14px 16px;font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--primary-light);border-bottom:1px solid var(--glass-border)}
+.table-glass tbody td{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.9rem}
+.table-glass tbody tr{transition:all .3s ease}
+.table-glass tbody tr:hover{background:rgba(255,255,255,0.03)}
+.badge-3d{padding:5px 12px;border-radius:8px;font-size:0.75rem;font-weight:600;letter-spacing:0.3px}
+.badge-pending{background:rgba(245,158,11,0.15);color:var(--warning);border:1px solid rgba(245,158,11,0.3)}
+.badge-resolved,.badge-returned,.badge-approved{background:rgba(16,185,129,0.15);color:var(--success);border:1px solid rgba(16,185,129,0.3)}
+.badge-rejected{background:rgba(239,68,68,0.15);color:var(--danger);border:1px solid rgba(239,68,68,0.3)}
+.badge-admin{background:rgba(239,68,68,0.15);color:var(--danger);border:1px solid rgba(239,68,68,0.3)}
+.badge-user{background:rgba(99,102,241,0.15);color:var(--primary-light);border:1px solid rgba(99,102,241,0.3)}
+.badge-lost{background:rgba(245,158,11,0.15);color:var(--warning);border:1px solid rgba(245,158,11,0.3)}
+.badge-found{background:rgba(16,185,129,0.15);color:var(--success);border:1px solid rgba(16,185,129,0.3)}
+.img-thumb{width:48px;height:48px;border-radius:10px;object-fit:cover;border:2px solid var(--glass-border)}
+.hero-3d{background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(139,92,246,0.15),rgba(236,72,153,0.1));backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:24px;padding:60px 40px;text-align:center;margin-bottom:32px;position:relative;overflow:hidden}
+.hero-3d::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(99,102,241,0.2),transparent 70%);border-radius:50%;animation:heroFloat 8s ease-in-out infinite}
+.hero-3d::after{content:'';position:absolute;bottom:-100px;left:-100px;width:300px;height:300px;background:radial-gradient(circle,rgba(236,72,153,0.15),transparent 70%);border-radius:50%;animation:heroFloat 8s ease-in-out infinite reverse}
+@keyframes heroFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-20px)}}
+.hero-3d h1{font-size:3rem;font-weight:900;margin-bottom:12px;position:relative;z-index:1}
+.hero-3d p{font-size:1.15rem;color:var(--text-muted);position:relative;z-index:1;max-width:600px;margin:0 auto}
+.feature-card{background:var(--card-bg);backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:20px;padding:32px 24px;text-align:center;transition:all .4s cubic-bezier(.175,.885,.32,1.275);cursor:default}
+.feature-card:hover{transform:translateY(-8px) rotateX(2deg);box-shadow:0 25px 60px rgba(0,0,0,0.3)}
+.feature-card .icon-wrap{width:72px;height:72px;border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:1.8rem;transition:all .3s ease}
+.feature-card:hover .icon-wrap{transform:scale(1.1) rotate(-5deg)}
+.feature-card h5{font-weight:700;margin-bottom:8px}
+.feature-card p{color:var(--text-muted);font-size:0.9rem;margin:0}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);z-index:9999;display:none;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal-glass{background:var(--dark2);border:1px solid var(--glass-border);border-radius:20px;padding:32px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto}
+.toast-float{position:fixed;top:80px;right:24px;z-index:9999;min-width:320px;padding:16px 20px;border-radius:14px;backdrop-filter:blur(20px);border:1px solid var(--glass-border);animation:slideInRight .4s cubic-bezier(.175,.885,.32,1.275);display:flex;align-items:center;gap:12px;font-weight:500;font-size:0.9rem}
+.toast-float.success{background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.3);color:var(--success)}
+.toast-float.danger{background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.3);color:var(--danger)}
+.toast-float.warning{background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.3);color:var(--warning)}
+@keyframes slideInRight{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+.empty-state{text-align:center;padding:60px 20px;color:var(--text-muted)}
+.empty-state i{font-size:4rem;margin-bottom:16px;display:block}
+.footer-glass{margin-top:60px;padding:32px 0;text-align:center;color:var(--text-muted);font-size:0.85rem;border-top:1px solid var(--glass-border)}
+.page-title{font-size:1.6rem;font-weight:800;margin-bottom:24px;display:flex;align-items:center;gap:12px}
+.page-title i{font-size:1.4rem}
+.container{max-width:1400px;margin:0 auto;padding:20px 24px}
+.row{display:grid;gap:20px}
+.row-2{grid-template-columns:1fr 1fr}
+.row-3{grid-template-columns:1fr 1fr 1fr}
+.row-4{grid-template-columns:1fr 1fr 1fr 1fr}
+.row-5{grid-template-columns:1fr 1fr 1fr 1fr 1fr}
+@media(max-width:1024px){.row-4,.row-5{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.row-2,.row-3,.row-4,.row-5{grid-template-columns:1fr}.hero-3d h1{font-size:2rem}.hero-3d{padding:40px 20px}.nav-links{display:none!important}}
+.auth-container{max-width:480px;margin:60px auto}
+.auth-card{background:var(--card-bg);backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:24px;padding:40px}
+.auth-card h2{font-size:1.8rem;font-weight:800;margin-bottom:8px}
+.auth-card .subtitle{color:var(--text-muted);margin-bottom:32px;font-size:0.95rem}
+.auth-card .auth-footer{text-align:center;margin-top:24px;color:var(--text-muted);font-size:0.9rem}
+.auth-card .auth-footer a{color:var(--primary-light);text-decoration:none;font-weight:600}
+.error-msg{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:var(--danger);padding:12px 16px;border-radius:12px;margin-bottom:16px;font-size:0.9rem;display:none;align-items:center;gap:8px}
+.error-msg.show{display:flex}
+.divider{height:1px;background:var(--glass-border);margin:16px 0}
+.d-flex{display:flex}.gap-2{gap:8px}.gap-3{gap:12px}.justify-between{justify-content:space-between}.align-center{align-items:center}.flex-wrap{flex-wrap:wrap}.flex-1{flex:1}.flex-col{flex-direction:column}
+.mb-1{margin-bottom:4px}.mb-2{margin-bottom:8px}.mb-3{margin-bottom:12px}.mb-4{margin-bottom:20px}.mb-5{margin-bottom:32px}.mt-2{margin-top:8px}.mt-3{margin-top:12px}.mt-4{margin-top:20px}
+.text-center{text-align:center}.text-muted{color:var(--text-muted)}.text-sm{font-size:0.85rem}.text-xs{font-size:0.75rem}.fw-bold{font-weight:700}
+.w-100{width:100%}
+.scroll-y{overflow-y:auto;max-height:500px}
+@media print{.no-print{display:none!important}.navbar-glass{display:none!important}body{background:white;color:#333}}
+.animate-in{animation:fadeUp .5s ease forwards;opacity:0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.badge-student{background:rgba(99,102,241,0.15);color:var(--primary-light);border:1px solid rgba(99,102,241,0.3)}
+.badge-staff{background:rgba(6,182,212,0.15);color:var(--info);border:1px solid rgba(6,182,212,0.3)}
+.badge-security{background:rgba(245,158,11,0.15);color:var(--warning);border:1px solid rgba(245,158,11,0.3)}
+.badge-moderator{background:rgba(139,92,246,0.15);color:var(--accent);border:1px solid rgba(139,92,246,0.3)}
+.badge-super{background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(239,68,68,0.15));color:var(--warning);border:1px solid rgba(245,158,11,0.4)}
+.badge-active{background:rgba(16,185,129,0.15);color:var(--success);border:1px solid rgba(16,185,129,0.3)}
+.badge-banned{background:rgba(239,68,68,0.15);color:var(--danger);border:1px solid rgba(239,68,68,0.3)}
+.badge-resolved{background:rgba(16,185,129,0.15);color:var(--success);border:1px solid rgba(16,185,129,0.3)}
+.badge-matched{background:rgba(124,58,237,0.15);color:#a78bfa;border:1px solid rgba(124,58,237,0.3)}
+.badge-urgent{background:rgba(239,68,68,0.2);color:var(--danger);border:1px solid rgba(239,68,68,0.4);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0.4)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0)}}
+.tab-bar{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:20px;padding:4px;background:var(--glass);border-radius:14px;border:1px solid var(--glass-border)}
+.tab-bar .tab{padding:8px 16px;border-radius:10px;cursor:pointer;font-size:0.85rem;font-weight:500;color:var(--text-muted);transition:all .3s ease;display:flex;align-items:center;gap:6px}
+.tab-bar .tab:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.tab-bar .tab.active{background:var(--primary);color:white;box-shadow:0 4px 12px rgba(99,102,241,0.3)}
+.chat-bubble{max-width:75%;padding:12px 16px;border-radius:16px;margin-bottom:8px;font-size:0.9rem;line-height:1.4;position:relative}
+.chat-sent{background:linear-gradient(135deg,var(--primary),var(--accent));color:white;margin-left:auto;border-bottom-right-radius:4px}
+.chat-received{background:var(--glass2);border:1px solid var(--glass-border);border-bottom-left-radius:4px}
+.progress-bar{width:100%;height:8px;background:var(--glass);border-radius:4px;overflow:hidden}
+.progress-bar .fill{height:100%;border-radius:4px;transition:width .6s ease}
+.timeline-item{position:relative;padding-left:32px;padding-bottom:24px;border-left:2px solid var(--glass-border)}
+.timeline-item:last-child{border-left:none}
+.timeline-item::before{content:'';position:absolute;left:-6px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--primary);border:2px solid var(--dark)}
+.switch{position:relative;display:inline-block;width:48px;height:26px;cursor:pointer}
+.switch input{opacity:0;width:0;height:0}
+.switch .slider{position:absolute;inset:0;background:var(--glass);border:1px solid var(--glass-border);border-radius:26px;transition:.3s}
+.switch .slider::before{content:'';position:absolute;height:20px;width:20px;left:3px;bottom:3px;background:var(--text-muted);border-radius:50%;transition:.3s}
+.switch input:checked+.slider{background:var(--primary);border-color:var(--primary)}
+.switch input:checked+.slider::before{transform:translateX(22px);background:white}
+.alert{padding:16px 20px;border-radius:14px;display:flex;align-items:center;gap:12px;font-size:0.9rem;margin-bottom:16px}
+.alert-info{background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.3);color:var(--info)}
+.alert-success{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:var(--success)}
+.alert-warning{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);color:var(--warning)}
+.alert-danger{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:var(--danger)}
+.score-ring{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;border:4px solid}
+</style>
+</head>
+<body>
+
+<nav class="navbar-glass" id="navbar"></nav>
+<div class="container" id="main-content">
+  <div style="text-align:center;padding:100px 20px">
+    <div style="width:48px;height:48px;border:4px solid var(--glass-border);border-top-color:var(--primary);border-radius:50%;margin:0 auto 20px;animation:spin 1s linear infinite"></div>
+    <p class="text-muted">Loading FindMe...</p>
+    <p class="text-xs text-muted mt-2">If this persists, make sure you are using <code>http://localhost</code> (not file://)</p>
+  </div>
+</div>
+<noscript><div style="text-align:center;padding:60px;color:white;background:#0f172a"><h2>JavaScript Required</h2><p>Please enable JavaScript to use FindMe.</p></div></noscript>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+<script>
+const DB={
+  db:null,
+  async init(){
+    const SQL=await initSqlJs({locateFile:f=>`https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${f}`});
+    const s=localStorage.getItem('findme_db_v1');
+    if(s){
+      try{
+        this.db=new SQL.Database(new Uint8Array(JSON.parse(s)));
+        this.createTables();
+        this.migrate();
+        const admin=this.q1("SELECT user_id FROM users WHERE email=?",'admin@cavendish.ac.ug');
+        if(!admin)this.seed();
+      }catch(e){
+        console.warn('DB load failed, creating fresh:',e);
+        localStorage.removeItem('findme_db_v1');
+        this.db=new SQL.Database();this.createTables();this.seed();
+      }
+    }
+    else{this.db=new SQL.Database();this.createTables();this.seed()}
+  },
+  save(){localStorage.setItem('findme_db_v1',JSON.stringify(Array.from(this.db.export())))},
+  migrate(){
+    const cols=(t)=>{const r=this.q(`PRAGMA table_info(${t})`);return r.map(c=>c.name)};
+    const add=(t,c,d)=>{try{this.db.run(`ALTER TABLE ${t} ADD COLUMN ${c} ${d}`)}catch(e){}};
+    const uc=cols('users');
+    if(!uc.includes('status'))add('users','status',"TEXT DEFAULT 'active'");
+    if(!uc.includes('campus'))add('users','campus',"TEXT DEFAULT 'Main Campus'");
+    if(!uc.includes('avatar'))add('users','avatar','TEXT');
+    if(!uc.includes('bio'))add('users','bio','TEXT');
+    if(!uc.includes('points'))add('users','points','INTEGER DEFAULT 0');
+    if(!uc.includes('badges'))add('users','badges',"TEXT DEFAULT ''");
+    if(!uc.includes('last_login'))add('users','last_login','TEXT');
+    if(!uc.includes('created_at'))add('users','created_at','DATETIME DEFAULT CURRENT_TIMESTAMP');
+    const lc=cols('lost_items');
+    if(!lc.includes('campus'))add('lost_items','campus','TEXT');
+    if(!lc.includes('views'))add('lost_items','views','INTEGER DEFAULT 0');
+    if(!lc.includes('is_urgent'))add('lost_items','is_urgent','INTEGER DEFAULT 0');
+    const fc=cols('found_items');
+    if(!fc.includes('campus'))add('found_items','campus','TEXT');
+    if(!fc.includes('views'))add('found_items','views','INTEGER DEFAULT 0');
+    if(!fc.includes('is_verified'))add('found_items','is_verified','INTEGER DEFAULT 0');
+    const cc=cols('claims');
+    if(!cc.includes('admin_note'))add('claims','admin_note','TEXT');
+    const nc=cols('notifications');
+    if(!nc.includes('type'))add('notifications','type',"TEXT DEFAULT 'info'");
+    if(!nc.includes('link'))add('notifications','link','TEXT');
+    const catc=cols('categories');
+    if(!catc.includes('description'))add('categories','description','TEXT');
+    if(!catc.includes('is_active'))add('categories','is_active','INTEGER DEFAULT 1');
+    this.save();
+  },
+  createTables(){
+    this.db.run(`CREATE TABLE IF NOT EXISTS users(user_id INTEGER PRIMARY KEY AUTOINCREMENT,fullname TEXT NOT NULL,email TEXT NOT NULL UNIQUE,phone TEXT,password TEXT NOT NULL,role TEXT DEFAULT 'student',status TEXT DEFAULT 'active',student_id TEXT,faculty TEXT,course TEXT,year_of_study TEXT,semester TEXT,campus TEXT DEFAULT 'Main Campus',avatar TEXT,bio TEXT,points INTEGER DEFAULT 0,badges TEXT DEFAULT '',last_login TEXT,created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`);
+    this.db.run(`CREATE TABLE IF NOT EXISTS categories(category_id INTEGER PRIMARY KEY AUTOINCREMENT,category_name TEXT NOT NULL,icon TEXT DEFAULT 'bi-question-circle',description TEXT,is_active INTEGER DEFAULT 1)`);
+    this.db.run(`CREATE TABLE IF NOT EXISTS lost_items(lost_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER NOT NULL,category_id INTEGER NOT NULL,item_name TEXT NOT NULL,description TEXT,date_lost TEXT,location TEXT,campus TEXT,image TEXT,views INTEGER DEFAULT 0,is_urgent INTEGER DEFAULT 0,status TEXT DEFAULT 'pending',created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`);
+    this.db.run(`CREATE TABLE IF NOT EXISTS found_items(found_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER NOT NULL,category_id INTEGER NOT NULL,item_name TEXT NOT NULL,description TEXT,date_found TEXT,location TEXT,campus TEXT,image TEXT,views INTEGER DEFAULT 0,is_verified INTEGER DEFAULT 0,status TEXT DEFAULT 'pending',created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`);
+    this.db.run(`CREATE TABLE IF NOT EXISTS claims(claim_id INTEGER PRIMARY KEY AUTOINCREMENT,found_id INTEGER NOT NULL,claimant_id INTEGER NOT NULL,reason TEXT,item_description TEXT,evidence TEXT,claim_date TEXT,status TEXT DEFAULT 'pending',admin_note TEXT,created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`);
+    this.db.run(`CREATE TABLE IF NOT EXISTS notifications(notification_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER NOT NULL,message TEXT NOT NULL,type TEXT DEFAULT 'info',link TEXT,status TEXT DEFAULT 'unread',created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`);
+    this.db.run(`CREATE TABLE IF NOT EXISTS announcements(announcement_id INTEGER PRIMARY KEY AUTOINCREMENT,author_id INTEGER NOT NULL,title TEXT NOT NULL,body TEXT NOT NULL,priority TEXT DEFAULT 'normal',target_role TEXT DEFAULT 'all',target_campus TEXT DEFAULT 'all',is_active INTEGER DEFAULT 1,created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`);
+    this.db.run(`CREATE TABLE IF NOT EXISTS audit_log(log_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER,action TEXT NOT NULL,target_type TEXT,target_id INTEGER,details TEXT,ip_address TEXT,created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`);
+    this.db.run(`CREATE TABLE IF NOT EXISTS saved_items(save_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER NOT NULL,item_type TEXT NOT NULL,item_id INTEGER NOT NULL,created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`);
+    this.db.run(`CREATE TABLE IF NOT EXISTS messages(msg_id INTEGER PRIMARY KEY AUTOINCREMENT,sender_id INTEGER NOT NULL,receiver_id INTEGER NOT NULL,claim_id INTEGER,message TEXT NOT NULL,is_read INTEGER DEFAULT 0,created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`);
+    this.db.run(`CREATE TABLE IF NOT EXISTS feedback(feedback_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER NOT NULL,rating INTEGER NOT NULL,comment TEXT,page TEXT,created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`);
+    this.db.run(`CREATE TABLE IF NOT EXISTS settings(setting_key TEXT PRIMARY KEY,setting_value TEXT,updated_at DATETIME DEFAULT CURRENT_TIMESTAMP)`);
+    this.save();
+  },
+  seed(){
+    this.db.run("INSERT INTO users(fullname,email,phone,password,role,student_id,faculty,course,year_of_study,semester,campus,bio) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",['System Administrator','admin@cavendish.ac.ug','+256700123456',this.hashP('password'),'admin','001-001','Administration','System Admin','4','1','Main Campus - Ggaba Road','FindMe System Administrator']);
+    this.db.run("INSERT INTO users(fullname,email,phone,password,role,student_id,faculty,course,year_of_study,semester,campus) VALUES(?,?,?,?,?,?,?,?,?,?,?)",['John Okello','john@cavendish.ac.ug','+256781234567',this.hashP('password123'),'student','202-015','Faculty of Science and Technology','BSc Computer Science','3','2','Main Campus - Ggaba Road']);
+    this.db.run("INSERT INTO users(fullname,email,phone,password,role,student_id,faculty,course,year_of_study,semester,campus) VALUES(?,?,?,?,?,?,?,?,?,?,?)",['Sarah Nakamya','sarah@cavendish.ac.ug','+256702345678',this.hashP('password123'),'staff','STF-001','Faculty of Business and Management','BBA - Management','5','1','Main Campus - Ggaba Road']);
+    this.db.run("INSERT INTO users(fullname,email,phone,password,role,student_id,faculty,course,year_of_study,semester,campus) VALUES(?,?,?,?,?,?,?,?,?,?,?)",['Peter Ssemwanga','peter@cavendish.ac.ug','+256783456789',this.hashP('password123'),'security','SEC-001','Administration','Campus Security','3','1','Main Campus - Ggaba Road']);
+    this.db.run("INSERT INTO users(fullname,email,phone,password,role,student_id,faculty,course,year_of_study,semester,campus) VALUES(?,?,?,?,?,?,?,?,?,?,?)",['Grace Achieng','grace@cavendish.ac.ug','+256704567890',this.hashP('password123'),'moderator','MOD-001','Faculty of Law','Bachelor of Laws (LLB)','4','2','Law Campus - Acacia, Bukoto']);
+    [['Electronics','bi-laptop','Laptops, phones, tablets, headphones'],['Documents','bi-file-earmark','IDs, certificates, transcripts, notebooks'],['Clothing','bi-handbag','Uniforms, jackets, shoes, ties'],['Accessories','bi-watch','Watches, jewelry, glasses'],['Keys','bi-key','Room keys, car keys, padlock keys'],['Bags','bi-bag','Backpacks, handbags, briefcases'],['ID Cards','bi-credit-card','Student IDs, national IDs, staff badges'],['Sports','bi-bicycle','Sports equipment, gym gear, water bottles'],['Others','bi-three-dots','Items that don\'t fit other categories']].forEach(c=>{this.db.run("INSERT INTO categories(category_name,icon,description) VALUES(?,?,?)",[c[0],c[1],c[2]])});
+    this.db.run("INSERT INTO announcements(author_id,title,body,priority,target_role) VALUES(?,?,?,?,?)",[1,'Welcome to FindMe!','Welcome to the Cavendish University Lost and Found system. Report lost items, find found items, and help our community reunite with their belongings.','normal','all']);
+    this.db.run("INSERT INTO announcements(author_id,title,body,priority,target_role) VALUES(?,?,?,?,?)",[1,'End of Semester Notice','As we approach the end of the semester, please check for any lost items before leaving campus. Visit the Security Office for unclaimed items.','high','all']);
+    [['site_name','FindMe'],['site_motto','University Lost & Found Management'],['max_upload_size','5'],['require_approval','true'],['enable_notifications','true'],['enable_messaging','true'],['campus_name','Cavendish University Uganda'],['contact_email','findme@cavendish.ac.ug'],['contact_phone','+256700123456'],['emergency_contact','+256700999999']].forEach(s=>{this.db.run("INSERT OR IGNORE INTO settings(setting_key,setting_value) VALUES(?,?)",[s[0],s[1]])});
+    this.save();
+  },
+  hashP(p){let h=0;for(let i=0;i<p.length;i++){h=((h<<5)-h)+p.charCodeAt(i);h=h&h}return'h_'+Math.abs(h).toString(36)},
+  verifyP(p,s){return this.hashP(p)===s},
+  q(sql,p=[]){const st=this.db.prepare(sql);if(p.length)st.bind(p);const r=[];while(st.step())r.push(st.getAsObject());st.free();return r},
+  q1(sql,p=[]){const r=this.q(sql,p);return r.length?r[0]:null},
+  run(sql,p=[]){this.db.run(sql,p);this.save()},
+  lastId(){return this.q1("SELECT last_insert_rowid() as id").id},
+  log(uid,action,tt,tid,det){try{this.run("INSERT INTO audit_log(user_id,action,target_type,target_id,details) VALUES(?,?,?,?,?)",[uid,action,tt,tid,det])}catch(e){}},
+  getSetting(k){const r=this.q1("SELECT setting_value FROM settings WHERE setting_key=?",[k]);return r?r.setting_value:null},
+  setSetting(k,v){this.run("INSERT OR REPLACE INTO settings(setting_key,setting_value,updated_at) VALUES(?,?,datetime('now'))",[k,v])},
+  notify(uid,msg,type='info',link=''){this.run("INSERT INTO notifications(user_id,message,type,link,status) VALUES(?,?,?,?,?)",[uid,msg,type,link,'unread'])},
+  sendMsg(sid,rid,msg,cid=null){this.run("INSERT INTO messages(sender_id,receiver_id,claim_id,message) VALUES(?,?,?,?)",[sid,rid,cid,msg])}
+};
+
+const Auth={
+  user:null,
+  init(){const s=sessionStorage.getItem('lfuser');if(s)this.user=JSON.parse(s)},
+  login(em,pw){
+    const u=DB.q1("SELECT * FROM users WHERE email=?",[em]);
+    if(!u||!DB.verifyP(pw,u.password))return{ok:false,msg:'Invalid email or password.'};
+    if(u.status==='banned')return{ok:false,msg:'Your account has been banned. Contact administrator.'};
+    this.user={user_id:u.user_id,fullname:u.fullname,email:u.email,role:u.role,status:u.status,student_id:u.student_id,faculty:u.faculty,course:u.course,campus:u.campus,points:u.points||0,badges:u.badges||''};
+    sessionStorage.setItem('lfuser',JSON.stringify(this.user));
+    DB.run("UPDATE users SET last_login=datetime('now') WHERE user_id=?",[u.user_id]);
+    DB.log(u.user_id,'login','user',u.user_id,'User logged in');
+    return{ok:true};
+  },
+  register(d){
+    if(DB.q1("SELECT user_id FROM users WHERE email=?",[d.email]))return{ok:false,msg:'Email already registered.'};
+    DB.run("INSERT INTO users(fullname,email,phone,password,role,student_id,faculty,course,year_of_study,semester,campus) VALUES(?,?,?,?,?,?,?,?,?,?,?)",[d.fullname,d.email,d.phone||'',DB.hashP(d.password),'student',d.student_id,d.faculty,d.course,d.year_of_study,d.semester,d.campus||'Main Campus']);
+    const uid=DB.lastId();
+    DB.log(uid,'register','user',uid,'New user registered: '+d.fullname);
+    return{ok:true};
+  },
+  logout(){if(this.user)DB.log(this.user.user_id,'logout','user',this.user.user_id,'User logged out');this.user=null;sessionStorage.removeItem('lfuser')},
+  logged(){return this.user!==null},
+  admin(){return this.user&&(this.user.role==='admin'||this.user.role==='super')},
+  staff(){return this.user&&(this.user.role==='staff'||this.user.role==='admin'||this.user.role==='super')},
+  security(){return this.user&&(this.user.role==='security'||this.user.role==='admin'||this.user.role==='super')},
+  moderator(){return this.user&&(this.user.role==='moderator'||this.user.role==='admin'||this.user.role==='super')},
+  hasRole(r){return this.user&&this.user.role===r},
+  can(action){
+    if(!this.user)return false;
+    const perms={
+      'manage_users':['admin','super'],
+      'manage_categories':['admin','super'],
+      'manage_items':['admin','super','moderator'],
+      'manage_claims':['admin','super','moderator'],
+      'verify_items':['admin','super','security'],
+      'manage_found':['admin','super','staff'],
+      'manage_announcements':['admin','super','moderator'],
+      'view_audit':['admin','super'],
+      'manage_settings':['super'],
+      'export_data':['admin','super'],
+      'view_analytics':['admin','super','moderator'],
+      'send_mass_msg':['admin','super'],
+      'ban_users':['admin','super']
+    };
+    return perms[action]?perms[action].includes(this.user.role):false;
+  },
+  roleBadge(r){const m={student:'badge-student',staff:'badge-staff',security:'badge-security',moderator:'badge-moderator',admin:'badge-admin',super:'badge-super'};return`<span class="badge-3d ${m[r]||'badge-user'}">${r}</span>`},
+  statusBadge(s){return`<span class="badge-3d badge-${s}">${s}</span>`},
+  notifCount(){if(!this.logged())return 0;const r=DB.q1("SELECT COUNT(*) as c FROM notifications WHERE user_id=? AND status='unread'",[this.user.user_id]);return r?r.c:0},
+  msgCount(){if(!this.logged())return 0;const r=DB.q1("SELECT COUNT(*) as c FROM messages WHERE receiver_id=? AND is_read=0",[this.user.user_id]);return r?r.c:0},
+  addPoints(pts){if(!this.logged())return;DB.run("UPDATE users SET points=points+? WHERE user_id=?",[pts,this.user.user_id]);this.user.points=(this.user.points||0)+pts;sessionStorage.setItem('lfuser',JSON.stringify(this.user))},
+  addBadge(badge){if(!this.logged())return;const cur=this.user.badges?this.user.badges.split(','):[];
+    if(!cur.includes(badge)){cur.push(badge);this.user.badges=cur.join(',');DB.run("UPDATE users SET badges=? WHERE user_id=?",[this.user.badges,this.user.user_id]);sessionStorage.setItem('lfuser',JSON.stringify(this.user))}}
+};
+
+const FACULTIES=['Faculty of Business and Management','Faculty of Law','Faculty of Science and Technology','Faculty of Socio-Economic Sciences','School of Postgraduate Studies'];
+const COURSES={
+  'Faculty of Business and Management':['BBA - Management','BBA - Accounting & Finance','BBA - Procurement & Logistics','BBA - Banking & Finance','BBA - Human Resource Management','BBA - Entrepreneurship','BBA - Marketing'],
+  'Faculty of Law':['Bachelor of Laws (LLB)','Diploma in Paralegal Studies'],
+  'Faculty of Science and Technology':['BSc Software Engineering','BSc Computer Science','BSc Data Science & Artificial Intelligence','Bachelor of Information Technology','BSc Economics & Statistics','Diploma in Computer Science & IT','Diploma of Data Science & Analytics'],
+  'Faculty of Socio-Economic Sciences':['Bachelor of Public Health','Bachelor of Environmental Health Science','BA Public Administration & Management','BA International Relations & Diplomacy','Bachelor of Mass Communication & Journalism'],
+  'School of Postgraduate Studies':['MBA - Management','MBA - Accounting & Finance','MBA - Procurement & Supply Chain','MBA - Entrepreneurship','MBA - Human Resource Management','MSc Project Management','Master of Information Technology','Master of Public Health','LLM - Master of Laws','MA International Relations']
+};
+const CAMPUS_LIST=['Main Campus - Ggaba Road','Law Campus - Acacia, Bukoto','Mukono Campus'];
+const YEARS=['1','2','3','4','5'];
+const SEMESTERS=['1','2'];
+
+const App={
+  page:'home',
+  init(){Auth.init();this.nav();window.addEventListener('hashchange',()=>this.go_());this.go_()},
+  go_(){this.page=location.hash.slice(1)||'home';this.render()},
+  render(){
+    const m={
+      home:()=>this.pgHome(),login:()=>this.pgLogin(),register:()=>this.pgRegister(),
+      dashboard:()=>Auth.logged()?this.pgDash():this.go('login'),
+      admin_dashboard:()=>Auth.admin()?this.pgAdminDash():this.go('login'),
+      report_lost:()=>Auth.logged()?this.pgReportLost():this.go('login'),
+      report_found:()=>Auth.logged()?this.pgReportFound():this.go('login'),
+      my_lost:()=>Auth.logged()?this.pgMyLost():this.go('login'),
+      my_found:()=>Auth.logged()?this.pgMyFound():this.go('login'),
+      edit_lost:()=>Auth.logged()?this.pgEditLost():this.go('login'),
+      edit_found:()=>Auth.logged()?this.pgEditFound():this.go('login'),
+      search:()=>this.pgSearch(),
+      item_detail:()=>this.pgItemDetail(),
+      submit_claim:()=>Auth.logged()?this.pgClaim():this.go('login'),
+      my_claims:()=>Auth.logged()?this.pgMyClaims():this.go('login'),
+      notifications:()=>Auth.logged()?this.pgNotifs():this.go('login'),
+      profile:()=>Auth.logged()?this.pgProfile():this.go('login'),
+      my_activity:()=>Auth.logged()?this.pgMyActivity():this.go('login'),
+      saved_items:()=>Auth.logged()?this.pgSavedItems():this.go('login'),
+      messages:()=>Auth.logged()?this.pgMessages():this.go('login'),
+      message_detail:()=>Auth.logged()?this.pgMsgDetail():this.go('login'),
+      help_center:()=>this.pgHelp(),
+      user_settings:()=>Auth.logged()?this.pgUserSettings():this.go('login'),
+      feedback:()=>Auth.logged()?this.pgFeedback():this.go('login'),
+      staff_dashboard:()=>Auth.staff()?this.pgStaffDash():this.go('login'),
+      staff_found:()=>Auth.staff()?this.pgStaffFound():this.go('login'),
+      security_dashboard:()=>Auth.security()?this.pgSecurityDash():this.go('login'),
+      security_verify:()=>Auth.security()?this.pgSecurityVerify():this.go('login'),
+      admin_users:()=>Auth.admin()?this.pgAdminUsers():this.go('login'),
+      admin_categories:()=>Auth.admin()?this.pgAdminCats():this.go('login'),
+      admin_lost:()=>Auth.admin()?this.pgAdminLost():this.go('login'),
+      admin_found:()=>Auth.admin()?this.pgAdminFound():this.go('login'),
+      admin_claims:()=>Auth.admin()?this.pgAdminClaims():this.go('login'),
+      admin_reports:()=>Auth.admin()?this.pgAdminReports():this.go('login'),
+      admin_announcements:()=>Auth.can('manage_announcements')?this.pgAdminAnnouncements():this.go('login'),
+      admin_audit:()=>Auth.can('view_audit')?this.pgAdminAudit():this.go('login'),
+      admin_matching:()=>Auth.admin()?this.pgAdminMatching():this.go('login'),
+      admin_analytics:()=>Auth.can('view_analytics')?this.pgAdminAnalytics():this.go('login'),
+      admin_backup:()=>Auth.can('export_data')?this.pgAdminBackup():this.go('login'),
+      admin_settings:()=>Auth.can('manage_settings')?this.pgAdminSettings():this.go('login'),
+      admin_mass_msg:()=>Auth.can('send_mass_msg')?this.pgAdminMassMsg():this.go('login')
+    };
+    const fn=m[this.page];if(fn)fn();else this.pgHome();this.nav();
+  },
+  go(p){location.hash=p},
+  h(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML},
+  toast(msg,type='success'){
+    const el=document.createElement('div');el.className=`toast-float ${type}`;
+    const icons={success:'bi-check-circle-fill',danger:'bi-exclamation-circle-fill',warning:'bi-exclamation-triangle-fill'};
+    el.innerHTML=`<i class="bi ${icons[type]||icons.success}"></i><span>${msg}</span>`;
+    document.body.appendChild(el);setTimeout(()=>{el.style.transition='all .4s ease';el.style.opacity='0';el.style.transform='translateX(50px)';setTimeout(()=>el.remove(),400)},4000);
+  },
+  cats(){return DB.q("SELECT * FROM categories ORDER BY category_name")},
+  catSel(sel=''){let o='<option value="">Select Category</option>';this.cats().forEach(c=>{o+=`<option value="${c.category_id}" ${c.category_id==sel?'selected':''}>${c.icon?`<i class="bi ${c.icon}"></i> `:''}${this.h(c.category_name)}</option>`});return`<select class="input-glass" id="category_id" required>${o}</select>`},
+  badge(st){const m={pending:'badge-pending',resolved:'badge-resolved',returned:'badge-returned',approved:'badge-approved',rejected:'badge-rejected'};return`<span class="badge-3d ${m[st]||'badge-pending'}">${this.h(st)}</span>`},
+  imgS(img){if(!img)return'';if(img.startsWith('data:')||img.startsWith('http'))return img;return'uploads/'+img},
+  footer(){return`<div class="footer-glass"><p>&copy; 2026 <span class="gradient-text fw-bold">FindMe</span> - Cavendish University Uganda Lost & Found Management System</p><p class="text-xs mt-2">Excellence Through Knowledge | Ggaba Road, Kampala, Uganda | +256 700 123 456</p></div>`},
+  animDelay(i){return`animation-delay:${i*0.08}s`},
+
+  nav(){
+    const nb=document.getElementById('navbar');let l='';
+    const nc=Auth.logged()?Auth.notifCount():0;const mc=Auth.logged()?Auth.msgCount():0;
+    const nb2=nc>0?`<span class="notif-badge">${nc}</span>`:'';const mb2=mc>0?`<span class="notif-badge">${mc}</span>`:'';
+    if(!Auth.logged()){
+      l=`<div class="nav-links"><a href="#home"><i class="bi bi-house"></i> Home</a><a href="#search"><i class="bi bi-search"></i> Search</a><a href="#help_center"><i class="bi bi-question-circle"></i> Help</a><a href="#login"><i class="bi bi-box-arrow-in-right"></i> Login</a><a href="#register" class="btn-glass btn-primary btn-sm"><i class="bi bi-person-plus"></i> Register</a></div>`;
+    }else if(Auth.admin()){
+      l=`<div class="nav-links">
+        <a href="#admin_dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+        <div style="position:relative"><a href="#" onclick="event.preventDefault()"><i class="bi bi-gear"></i> Admin</a><div style="display:none;position:absolute;top:100%;left:0;background:var(--dark2);border:1px solid var(--glass-border);border-radius:12px;padding:8px;min-width:200px;z-index:100" class="admin-dropdown">
+          <a href="#admin_users" style="display:block;padding:8px 12px;color:var(--text);text-decoration:none;border-radius:8px;font-size:0.85rem"><i class="bi bi-people"></i> Users</a>
+          <a href="#admin_categories" style="display:block;padding:8px 12px;color:var(--text);text-decoration:none;border-radius:8px;font-size:0.85rem"><i class="bi bi-tags"></i> Categories</a>
+          <a href="#admin_lost" style="display:block;padding:8px 12px;color:var(--text);text-decoration:none;border-radius:8px;font-size:0.85rem"><i class="bi bi-flag"></i> Lost Items</a>
+          <a href="#admin_found" style="display:block;padding:8px 12px;color:var(--text);text-decoration:none;border-radius:8px;font-size:0.85rem"><i class="bi bi-hand-index-thumb"></i> Found Items</a>
+          <a href="#admin_claims" style="display:block;padding:8px 12px;color:var(--text);text-decoration:none;border-radius:8px;font-size:0.85rem"><i class="bi bi-clipboard-check"></i> Claims</a>
+          <a href="#admin_announcements" style="display:block;padding:8px 12px;color:var(--text);text-decoration:none;border-radius:8px;font-size:0.85rem"><i class="bi bi-megaphone"></i> Announcements</a>
+          <a href="#admin_matching" style="display:block;padding:8px 12px;color:var(--text);text-decoration:none;border-radius:8px;font-size:0.85rem"><i class="bi bi-link-45deg"></i> Item Matching</a>
+          <a href="#admin_analytics" style="display:block;padding:8px 12px;color:var(--text);text-decoration:none;border-radius:8px;font-size:0.85rem"><i class="bi bi-graph-up"></i> Analytics</a>
+          <a href="#admin_reports" style="display:block;padding:8px 12px;color:var(--text);text-decoration:none;border-radius:8px;font-size:0.85rem"><i class="bi bi-bar-chart"></i> Reports</a>
+          <a href="#admin_audit" style="display:block;padding:8px 12px;color:var(--text);text-decoration:none;border-radius:8px;font-size:0.85rem"><i class="bi bi-journal-text"></i> Audit Log</a>
+          <a href="#admin_backup" style="display:block;padding:8px 12px;color:var(--text);text-decoration:none;border-radius:8px;font-size:0.85rem"><i class="bi bi-download"></i> Export Data</a>
+          <a href="#admin_mass_msg" style="display:block;padding:8px 12px;color:var(--text);text-decoration:none;border-radius:8px;font-size:0.85rem"><i class="bi bi-envelope"></i> Mass Message</a>
+          ${Auth.can('manage_settings')?`<a href="#admin_settings" style="display:block;padding:8px 12px;color:var(--text);text-decoration:none;border-radius:8px;font-size:0.85rem"><i class="bi bi-sliders"></i> Settings</a>`:''}
+        </div></div>
+        <a href="#admin_reports"><i class="bi bi-bar-chart"></i> Reports</a>
+        <a href="#notifications"><i class="bi bi-bell"></i> ${nb2}</a>
+        <a href="#messages"><i class="bi bi-envelope"></i> ${mb2}</a>
+      </div>`;
+    }else if(Auth.staff()){
+      l=`<div class="nav-links">
+        <a href="#staff_dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+        <a href="#staff_found"><i class="bi bi-hand-index-thumb"></i> Found Items</a>
+        <a href="#search"><i class="bi bi-search"></i> Search</a>
+        <a href="#report_lost"><i class="bi bi-flag"></i> Report Lost</a>
+        <a href="#notifications"><i class="bi bi-bell"></i> ${nb2}</a>
+        <a href="#messages"><i class="bi bi-envelope"></i> ${mb2}</a>
+      </div>`;
+    }else if(Auth.security()){
+      l=`<div class="nav-links">
+        <a href="#security_dashboard"><i class="bi bi-shield-check"></i> Dashboard</a>
+        <a href="#security_verify"><i class="bi bi-patch-check"></i> Verify</a>
+        <a href="#search"><i class="bi bi-search"></i> Search</a>
+        <a href="#report_found"><i class="bi bi-hand-index-thumb"></i> Report Found</a>
+        <a href="#notifications"><i class="bi bi-bell"></i> ${nb2}</a>
+      </div>`;
+    }else{
+      l=`<div class="nav-links">
+        <a href="#dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+        <a href="#report_lost"><i class="bi bi-flag"></i> Report Lost</a>
+        <a href="#report_found"><i class="bi bi-hand-index-thumb"></i> Report Found</a>
+        <a href="#search"><i class="bi bi-search"></i> Search</a>
+        <a href="#saved_items"><i class="bi bi-bookmark"></i> Saved</a>
+        <a href="#notifications"><i class="bi bi-bell"></i> ${nb2}</a>
+        <a href="#messages"><i class="bi bi-envelope"></i> ${mb2}</a>
+      </div>`;
+    }
+    const roleLabel=Auth.logged()?Auth.roleBadge(Auth.user.role):'';
+    nb.innerHTML=`<div class="navbar-inner"><a class="nav-brand gradient-text" href="#home"><i class="bi bi-search-heart"></i> FindMe</a>${l}${Auth.logged()?`<div class="nav-user">
+      <div class="d-flex align-center gap-2">
+        ${roleLabel}
+        <a href="#profile" class="d-flex align-center gap-2" style="text-decoration:none;color:var(--text)">
+          <div class="nav-avatar">${(Auth.user.fullname||'U').charAt(0)}</div>
+          <span class="text-sm fw-bold" style="display:none">${this.h(Auth.user.fullname)}</span>
+        </a>
+      </div>
+      <button class="btn-glass btn-sm" onclick="Auth.logout();App.go('home')" title="Logout"><i class="bi bi-box-arrow-right"></i></button>
+    </div>`:''}</div>`;
+    document.querySelectorAll('.admin-dropdown').forEach(dd=>{
+      const trigger=dd.previousElementSibling;
+      trigger.addEventListener('click',e=>{e.preventDefault();dd.style.display=dd.style.display==='block'?'none':'block'});
+      dd.addEventListener('mouseleave',()=>{dd.style.display='none'});
+    });
+  },
+
+  pgHome(){
+    const rl=DB.q("SELECT l.*, c.category_name, u.fullname FROM lost_items l JOIN categories c ON l.category_id=c.category_id JOIN users u ON l.user_id=u.user_id ORDER BY l.created_at DESC LIMIT 6");
+    let cards='';rl.forEach((it,i)=>{cards+=`<div class="card-3d animate-in" style="${this.animDelay(i)}"><img src="${this.imgS(it.image)||'https://placehold.co/400x200/1e293b/94a3b8?text=No+Image'}" style="width:100%;height:180px;object-fit:cover;border-radius:12px;margin-bottom:16px"><h4 style="font-weight:700;margin-bottom:8px">${this.h(it.item_name)}</h4><div class="d-flex gap-2 mb-2 flex-wrap"><span class="badge-3d badge-lost"><i class="bi bi-flag"></i> Lost</span><span class="badge-3d badge-pending">${this.h(it.category_name)}</span></div><p class="text-sm text-muted mb-2"><i class="bi bi-geo-alt"></i> ${this.h(it.location)}</p><p class="text-sm text-muted" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${this.h(it.description||'No description')}</p><div class="d-flex justify-between align-center mt-3"><span class="text-xs text-muted">${it.created_at||''}</span>${this.badge(it.status)}</div></div>`});
+    const tc=DB.q1("SELECT COUNT(*) as c FROM lost_items").c;const fc2=DB.q1("SELECT COUNT(*) as c FROM found_items").c;const uc=DB.q1("SELECT COUNT(*) as c FROM users").c;
+    document.getElementById('main-content').innerHTML=`
+      <div class="hero-3d animate-in">
+        <h1><span class="gradient-text">FindMe</span></h1>
+        <p>Your university's intelligent lost and found management system. Report, search, and reclaim your belongings seamlessly.</p>
+        <div class="d-flex justify-between align-center mt-4" style="justify-content:center;gap:16px;position:relative;z-index:1">
+          ${Auth.logged()?`<a href="#dashboard" class="btn-glass btn-primary btn-lg"><i class="bi bi-speedometer2"></i> Dashboard</a>`:`<a href="#register" class="btn-glass btn-primary btn-lg"><i class="bi bi-person-plus"></i> Get Started</a><a href="#login" class="btn-glass btn-lg"><i class="bi bi-box-arrow-in-right"></i> Login</a>`}
+        </div>
+      </div>
+      <div class="row row-3 mb-5">
+        <div class="stat-card animate-in" style="${this.animDelay(0)}"><div class="stat-icon" style="background:rgba(245,158,11,0.15);color:var(--warning)"><i class="bi bi-flag"></i></div><h2 style="color:var(--warning)">${tc}</h2><p>Lost Items Reported</p></div>
+        <div class="stat-card animate-in" style="${this.animDelay(1)}"><div class="stat-icon" style="background:rgba(16,185,129,0.15);color:var(--success)"><i class="bi bi-hand-index-thumb"></i></div><h2 style="color:var(--success)">${fc2}</h2><p>Found Items Listed</p></div>
+        <div class="stat-card animate-in" style="${this.animDelay(2)}"><div class="stat-icon" style="background:rgba(99,102,241,0.15);color:var(--primary-light)"><i class="bi bi-people"></i></div><h2 style="color:var(--primary-light)">${uc}</h2><p>Registered Students</p></div>
+      </div>
+      <div class="row row-3 mb-5">
+        <div class="feature-card animate-in" style="${this.animDelay(0)}"><div class="icon-wrap" style="background:rgba(245,158,11,0.15);color:var(--warning)"><i class="bi bi-flag"></i></div><h5>Report Lost Items</h5><p>Lost something? Report it with details so the community can help you find it.</p></div>
+        <div class="feature-card animate-in" style="${this.animDelay(1)}"><div class="icon-wrap" style="background:rgba(16,185,129,0.15);color:var(--success)"><i class="bi bi-hand-index-thumb"></i></div><h5>Report Found Items</h5><p>Found something? List it so its owner can claim it back.</p></div>
+        <div class="feature-card animate-in" style="${this.animDelay(2)}"><div class="icon-wrap" style="background:rgba(139,92,246,0.15);color:var(--accent)"><i class="bi bi-search"></i></div><h5>Search & Claim</h5><p>Browse or search for your lost item and submit a claim to get it back.</p></div>
+      </div>
+      ${rl.length?`<h3 class="page-title animate-in"><i class="bi bi-clock-history"></i> <span class="gradient-text">Recent Lost Items</span></h3><div class="row row-3 mb-5">${cards}</div>`:''}${this.footer()}`;
+  },
+
+  pgLogin(){
+    if(Auth.logged()){const r=Auth.user.role;if(r==='admin'||r==='super')this.go('admin_dashboard');else if(r==='staff')this.go('staff_dashboard');else if(r==='security')this.go('security_dashboard');else this.go('dashboard');return}
+    document.getElementById('main-content').innerHTML=`<div class="auth-container animate-in"><div class="auth-card"><h2 class="gradient-text">Welcome Back</h2><p class="subtitle">Sign in to your FindMe account</p><div id="login-err" class="error-msg"><i class="bi bi-exclamation-circle"></i><span></span></div><form id="loginForm"><div class="form-group"><label>Email Address</label><input type="email" class="input-glass" id="loginEmail" placeholder="you@university.edu" required></div><div class="form-group"><label>Password</label><input type="password" class="input-glass" id="loginPassword" placeholder="Enter your password" required></div><button type="submit" class="btn-glass btn-primary w-100 btn-lg"><i class="bi bi-box-arrow-in-right"></i> Sign In</button></form><p class="auth-footer">Don't have an account? <a href="#register">Create one now</a></p></div></div>`;
+    document.getElementById('loginForm').onsubmit=e=>{e.preventDefault();const r=Auth.login(document.getElementById('loginEmail').value,document.getElementById('loginPassword').value);if(r.ok){const role=Auth.user.role;if(role==='admin'||role==='super')this.go('admin_dashboard');else if(role==='staff')this.go('staff_dashboard');else if(role==='security')this.go('security_dashboard');else this.go('dashboard')}else{const er=document.getElementById('login-err');er.querySelector('span').textContent=r.msg;er.classList.add('show')}};
+  },
+
+  pgRegister(){
+    if(Auth.logged()){const r=Auth.user.role;if(r==='admin'||r==='super')this.go('admin_dashboard');else if(r==='staff')this.go('staff_dashboard');else if(r==='security')this.go('security_dashboard');else this.go('dashboard');return}
+    const facOpts=FACULTIES.map(f=>`<option value="${f}">${f}</option>`).join('');
+    document.getElementById('main-content').innerHTML=`<div class="auth-container animate-in"><div class="auth-card" style="max-width:560px;margin:0 auto"><h2 class="gradient-text">Join FindMe</h2><p class="subtitle">Create your student account</p><div id="reg-err" class="error-msg"><i class="bi bi-exclamation-circle"></i><span></span></div><form id="regForm">
+      <div class="form-group"><label>Full Name *</label><input type="text" class="input-glass" id="rName" placeholder="Enter your full name" required></div>
+      <div class="form-group"><label>Student/Staff ID *</label><input type="text" class="input-glass" id="rSid" placeholder="e.g. 123-456" pattern="[0-9]{3}-[0-9]{3}" required title="Format: 123-456"></div>
+      <div class="form-group"><label>Email Address *</label><input type="email" class="input-glass" id="rEmail" placeholder="you@cavendish.ac.ug" required></div>
+      <div class="form-group"><label>Phone Number</label><input type="text" class="input-glass" id="rPhone" placeholder="e.g. 0700123456"></div>
+      <div class="form-group"><label>Campus *</label><select class="input-glass" id="rCampus" required><option value="">Select Campus</option>${CAMPUS_LIST.map(c=>`<option value="${c}">${c}</option>`).join('')}</select></div>
+      <div class="form-group"><label>Faculty *</label><select class="input-glass" id="rFaculty" required><option value="">Select Faculty</option>${facOpts}</select></div>
+      <div class="form-group"><label>Course / Program *</label><select class="input-glass" id="rCourse" required><option value="">Select Faculty first</option></select></div>
+      <div class="row row-2"><div class="form-group"><label>Year of Study *</label><select class="input-glass" id="rYear" required><option value="">Select Year</option>${YEARS.map(y=>`<option value="${y}">Year ${y}</option>`).join('')}</select></div><div class="form-group"><label>Semester *</label><select class="input-glass" id="rSem" required><option value="">Select Semester</option><option value="1">Semester 1</option><option value="2">Semester 2</option></select></div></div>
+      <div class="form-group"><label>Password *</label><input type="password" class="input-glass" id="rPwd" placeholder="Min 6 characters" required minlength="6"></div>
+      <div class="form-group"><label>Confirm Password *</label><input type="password" class="input-glass" id="rCfPwd" placeholder="Re-enter password" required></div>
+      <button type="submit" class="btn-glass btn-primary w-100 btn-lg"><i class="bi bi-person-plus"></i> Create Account</button>
+    </form><p class="auth-footer">Already have an account? <a href="#login">Sign in</a></p></div></div>`;
+    document.getElementById('rFaculty').onchange=function(){const c=COURSES[this.value]||[];const sel=document.getElementById('rCourse');sel.innerHTML='<option value="">Select Course</option>'+c.map(x=>`<option value="${x}">${x}</option>`).join('')};
+    document.getElementById('regForm').onsubmit=e=>{e.preventDefault();
+      const d={fullname:document.getElementById('rName').value.trim(),email:document.getElementById('rEmail').value.trim(),phone:document.getElementById('rPhone').value.trim(),student_id:document.getElementById('rSid').value.trim(),campus:document.getElementById('rCampus').value,faculty:document.getElementById('rFaculty').value,course:document.getElementById('rCourse').value,year_of_study:document.getElementById('rYear').value,semester:document.getElementById('rSem').value,password:document.getElementById('rPwd').value,cf:document.getElementById('rCfPwd').value};
+      const er=document.getElementById('reg-err');
+      if(!d.fullname||!d.email||!d.password||!d.student_id||!d.campus||!d.faculty||!d.course||!d.year_of_study||!d.semester){er.querySelector('span').textContent='All required fields must be filled.';er.classList.add('show');return}
+      if(!/^\d{3}-\d{3}$/.test(d.student_id)){er.querySelector('span').textContent='Student ID must be in format 123-456.';er.classList.add('show');return}
+      if(d.password.length<6){er.querySelector('span').textContent='Password must be at least 6 characters.';er.classList.add('show');return}
+      if(d.password!==d.cf){er.querySelector('span').textContent='Passwords do not match.';er.classList.add('show');return}
+      const r=Auth.register(d);if(r.ok){this.toast('Account created! Please sign in.');this.go('login')}else{er.querySelector('span').textContent=r.msg;er.classList.add('show')}};
+  },
+
+  pgDash(){
+    const uid=Auth.user.user_id;
+    const lc=DB.q1("SELECT COUNT(*) as c FROM lost_items WHERE user_id=?",[uid]).c;
+    const fc2=DB.q1("SELECT COUNT(*) as c FROM found_items WHERE user_id=?",[uid]).c;
+    const cc=DB.q1("SELECT COUNT(*) as c FROM claims WHERE claimant_id=?",[uid]).c;
+    const ac=DB.q1("SELECT COUNT(*) as c FROM claims WHERE claimant_id=? AND status='approved'",[uid]).c;
+    const ml=DB.q("SELECT l.*, c.category_name FROM lost_items l JOIN categories c ON l.category_id=c.category_id WHERE l.user_id=? ORDER BY l.created_at DESC LIMIT 5",[uid]);
+    const mf=DB.q("SELECT f.*, c.category_name FROM found_items f JOIN categories c ON f.category_id=c.category_id WHERE f.user_id=? ORDER BY f.created_at DESC LIMIT 5",[uid]);
+    let lr=ml.length?'':'<tr><td colspan="4" class="text-center text-muted">No lost items yet. <a href="#report_lost" style="color:var(--primary-light)">Report one</a></td></tr>';
+    ml.forEach(i=>{lr+=`<tr><td><img src="${this.imgS(i.image)||'https://placehold.co/48x48/1e293b/94a3b8?text=N/A'}" class="img-thumb"></td><td>${this.h(i.item_name)}</td><td>${this.h(i.category_name)}</td><td>${this.badge(i.status)}</td></tr>`});
+    let fr=mf.length?'':'<tr><td colspan="4" class="text-center text-muted">No found items yet. <a href="#report_found" style="color:var(--primary-light)">Report one</a></td></tr>';
+    mf.forEach(i=>{fr+=`<tr><td><img src="${this.imgS(i.image)||'https://placehold.co/48x48/1e293b/94a3b8?text=N/A'}" class="img-thumb"></td><td>${this.h(i.item_name)}</td><td>${this.h(i.category_name)}</td><td>${this.badge(i.status)}</td></tr>`});
+    document.getElementById('main-content').innerHTML=`
+      <h2 class="page-title animate-in"><i class="bi bi-speedometer2 gradient-text"></i> <span class="gradient-text">My Dashboard</span></h2>
+      <div class="row row-4 mb-5">
+        <div class="stat-card animate-in" style="${this.animDelay(0)}"><div class="stat-icon" style="background:rgba(245,158,11,0.15);color:var(--warning)"><i class="bi bi-flag"></i></div><h2 style="color:var(--warning)">${lc}</h2><p>My Lost Items</p></div>
+        <div class="stat-card animate-in" style="${this.animDelay(1)}"><div class="stat-icon" style="background:rgba(16,185,129,0.15);color:var(--success)"><i class="bi bi-hand-index-thumb"></i></div><h2 style="color:var(--success)">${fc2}</h2><p>My Found Items</p></div>
+        <div class="stat-card animate-in" style="${this.animDelay(2)}"><div class="stat-icon" style="background:rgba(139,92,246,0.15);color:var(--accent)"><i class="bi bi-clipboard-check"></i></div><h2 style="color:var(--accent)">${cc}</h2><p>My Claims</p></div>
+        <div class="stat-card animate-in" style="${this.animDelay(3)}"><div class="stat-icon" style="background:rgba(6,182,212,0.15);color:var(--info)"><i class="bi bi-check-circle"></i></div><h2 style="color:var(--info)">${ac}</h2><p>Approved</p></div>
+      </div>
+      <div class="row row-2 mb-5">
+        <div class="card-3d animate-in" style="${this.animDelay(0)}"><div class="d-flex justify-between align-center mb-4"><h3 class="fw-bold"><i class="bi bi-flag" style="color:var(--warning)"></i> My Lost Items</h3><a href="#report_lost" class="btn-glass btn-sm btn-primary"><i class="bi bi-plus-lg"></i> New</a></div><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>Item</th><th>Name</th><th>Category</th><th>Status</th></tr></thead><tbody>${lr}</tbody></table></div></div>
+        <div class="card-3d animate-in" style="${this.animDelay(1)}"><div class="d-flex justify-between align-center mb-4"><h3 class="fw-bold"><i class="bi bi-hand-index-thumb" style="color:var(--success)"></i> My Found Items</h3><a href="#report_found" class="btn-glass btn-sm btn-success"><i class="bi bi-plus-lg"></i> New</a></div><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>Item</th><th>Name</th><th>Category</th><th>Status</th></tr></thead><tbody>${fr}</tbody></table></div></div>
+      </div>${this.footer()}`;
+  },
+
+  pgAdminDash(){
+    const lc=DB.q1("SELECT COUNT(*) as c FROM lost_items").c;const fc2=DB.q1("SELECT COUNT(*) as c FROM found_items").c;const cc=DB.q1("SELECT COUNT(*) as c FROM claims").c;const rc=DB.q1("SELECT COUNT(*) as c FROM found_items WHERE status='returned'").c;const uc=DB.q1("SELECT COUNT(*) as c FROM users").c;const cats=DB.q1("SELECT COUNT(*) as c FROM categories").c;
+    const acts=DB.q("SELECT 'lost' as t, item_name, created_at FROM lost_items UNION ALL SELECT 'found' as t, item_name, created_at FROM found_items ORDER BY created_at DESC LIMIT 12");
+    let ar='';acts.forEach(a=>{ar+=`<tr><td><span class="badge-3d ${a.t==='lost'?'badge-lost':'badge-found'}">${a.t==='lost'?'Lost':'Found'}</span></td><td>${this.h(a.item_name)}</td><td class="text-sm text-muted">${a.created_at}</td></tr>`});
+    document.getElementById('main-content').innerHTML=`
+      <h2 class="page-title animate-in"><i class="bi bi-speedometer2 gradient-text"></i> <span class="gradient-text">Admin Dashboard</span></h2>
+      <div class="row row-4 mb-5">
+        <div class="stat-card animate-in" style="${this.animDelay(0)}"><div class="stat-icon" style="background:rgba(245,158,11,0.15);color:var(--warning)"><i class="bi bi-flag"></i></div><h2 style="color:var(--warning)">${lc}</h2><p>Lost Items</p></div>
+        <div class="stat-card animate-in" style="${this.animDelay(1)}"><div class="stat-icon" style="background:rgba(16,185,129,0.15);color:var(--success)"><i class="bi bi-hand-index-thumb"></i></div><h2 style="color:var(--success)">${fc2}</h2><p>Found Items</p></div>
+        <div class="stat-card animate-in" style="${this.animDelay(2)}"><div class="stat-icon" style="background:rgba(245,158,11,0.15);color:var(--warning)"><i class="bi bi-clipboard-check"></i></div><h2 style="color:var(--warning)">${cc}</h2><p>Total Claims</p></div>
+        <div class="stat-card animate-in" style="${this.animDelay(3)}"><div class="stat-icon" style="background:rgba(16,185,129,0.15);color:var(--success)"><i class="bi bi-arrow-return-left"></i></div><h2 style="color:var(--success)">${rc}</h2><p>Recovered</p></div>
+      </div>
+      <div class="row row-2 mb-5">
+        <div class="card-3d animate-in" style="${this.animDelay(0)}"><h3 class="fw-bold mb-4"><i class="bi bi-activity" style="color:var(--primary-light)"></i> Recent Activity</h3><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>Type</th><th>Item</th><th>Date</th></tr></thead><tbody>${ar||'<tr><td colspan="3" class="text-center text-muted">No activities yet</td></tr>'}</tbody></table></div></div>
+        <div class="card-3d animate-in" style="${this.animDelay(1)}"><h3 class="fw-bold mb-4"><i class="bi bi-grid" style="color:var(--accent)"></i> Quick Actions</h3>
+          <div class="row row-2">
+            <a href="#admin_users" class="btn-glass"><i class="bi bi-people"></i> Users <span class="badge-3d badge-user" style="margin-left:auto">${uc}</span></a>
+            <a href="#admin_categories" class="btn-glass"><i class="bi bi-tags"></i> Categories <span class="badge-3d badge-found" style="margin-left:auto">${cats}</span></a>
+            <a href="#admin_announcements" class="btn-glass"><i class="bi bi-megaphone"></i> Announcements</a>
+            <a href="#admin_matching" class="btn-glass"><i class="bi bi-link-45deg"></i> Item Matching</a>
+            <a href="#admin_analytics" class="btn-glass"><i class="bi bi-graph-up"></i> Analytics</a>
+            <a href="#admin_audit" class="btn-glass"><i class="bi bi-journal-text"></i> Audit Log</a>
+            <a href="#admin_mass_msg" class="btn-glass"><i class="bi bi-envelope"></i> Mass Message</a>
+            <a href="#admin_backup" class="btn-glass"><i class="bi bi-download"></i> Export Data</a>
+          </div>
+        </div>
+      </div>${this.footer()}`;
+  },
+
+  pgReportLost(){
+    document.getElementById('main-content').innerHTML=`<div class="auth-container" style="max-width:640px"><div class="card-3d animate-in"><h2 class="page-title"><i class="bi bi-flag" style="color:var(--warning)"></i> Report Lost Item</h2><form id="lostForm">
+      <div class="form-group"><label>Item Name *</label><input type="text" class="input-glass" id="lostName" placeholder="e.g. Blue Backpack" required></div>
+      <div class="form-group"><label>Category *</label>${this.catSel()}</div>
+      <div class="form-group"><label>Description</label><textarea class="input-glass" id="lostDesc" rows="4" placeholder="Describe the item in detail..."></textarea></div>
+      <div class="row row-2"><div class="form-group"><label>Date Lost *</label><input type="date" class="input-glass" id="lostDate" required></div><div class="form-group"><label>Location *</label><input type="text" class="input-glass" id="lostLoc" placeholder="e.g. Library Building" required></div></div>
+      <div class="form-group"><label>Photo of Item</label><input type="file" class="input-glass" id="lostImg" accept="image/*"></div>
+      <button type="submit" class="btn-glass btn-primary w-100 btn-lg"><i class="bi bi-send"></i> Submit Lost Report</button>
+    </form></div></div>`;
+    document.getElementById('lostForm').onsubmit=e=>{e.preventDefault();const f=document.getElementById('lostImg').files[0];const ins=img=>{DB.run("INSERT INTO lost_items(user_id,category_id,item_name,description,date_lost,location,image,status) VALUES(?,?,?,?,?,?,?,?)",[Auth.user.user_id,document.getElementById('category_id').value,document.getElementById('lostName').value.trim(),document.getElementById('lostDesc').value.trim(),document.getElementById('lostDate').value,document.getElementById('lostLoc').value.trim(),img||'','pending']);this.toast('Lost item reported successfully!');this.go('my_lost')};if(f){const r=new FileReader();r.onload=ev=>ins(ev.target.result);r.readAsDataURL(f)}else ins('')};
+  },
+
+  pgReportFound(){
+    document.getElementById('main-content').innerHTML=`<div class="auth-container" style="max-width:640px"><div class="card-3d animate-in"><h2 class="page-title"><i class="bi bi-hand-index-thumb" style="color:var(--success)"></i> Report Found Item</h2><form id="foundForm">
+      <div class="form-group"><label>Item Name *</label><input type="text" class="input-glass" id="fName" placeholder="e.g. Black Wallet" required></div>
+      <div class="form-group"><label>Category *</label>${this.catSel()}</div>
+      <div class="form-group"><label>Description</label><textarea class="input-glass" id="fDesc" rows="4" placeholder="Describe the item in detail..."></textarea></div>
+      <div class="row row-2"><div class="form-group"><label>Date Found *</label><input type="date" class="input-glass" id="fDate" required></div><div class="form-group"><label>Location *</label><input type="text" class="input-glass" id="fLoc" placeholder="e.g. Computer Lab 3" required></div></div>
+      <div class="form-group"><label>Photo of Item</label><input type="file" class="input-glass" id="fImg" accept="image/*"></div>
+      <button type="submit" class="btn-glass btn-success w-100 btn-lg"><i class="bi bi-send"></i> Submit Found Report</button>
+    </form></div></div>`;
+    document.getElementById('foundForm').onsubmit=e=>{e.preventDefault();const f=document.getElementById('fImg').files[0];const ins=img=>{DB.run("INSERT INTO found_items(user_id,category_id,item_name,description,date_found,location,image,status) VALUES(?,?,?,?,?,?,?,?)",[Auth.user.user_id,document.getElementById('category_id').value,document.getElementById('fName').value.trim(),document.getElementById('fDesc').value.trim(),document.getElementById('fDate').value,document.getElementById('fLoc').value.trim(),img||'','pending']);this.toast('Found item reported successfully!');this.go('my_found')};if(f){const r=new FileReader();r.onload=ev=>ins(ev.target.result);r.readAsDataURL(f)}else ins('')};
+  },
+
+  pgMyLost(){
+    const uid=Auth.user.user_id;const items=DB.q("SELECT l.*, c.category_name FROM lost_items l JOIN categories c ON l.category_id=c.category_id WHERE l.user_id=? ORDER BY l.created_at DESC",[uid]);
+    let rows=items.length?'':'<tr><td colspan="7" class="text-center text-muted">No lost items yet. <a href="#report_lost" style="color:var(--primary-light)">Report one</a></td></tr>';
+    items.forEach(i=>{rows+=`<tr><td>${i.lost_id}</td><td><img src="${this.imgS(i.image)||'https://placehold.co/48x48/1e293b/94a3b8?text=N/A'}" class="img-thumb"></td><td>${this.h(i.item_name)}</td><td>${this.h(i.category_name)}</td><td>${this.h(i.location)}</td><td>${this.badge(i.status)}</td><td><div class="d-flex gap-2"><a href="#edit_lost?id=${i.lost_id}" class="btn-glass btn-sm btn-warning"><i class="bi bi-pencil"></i></a><button class="btn-glass btn-sm btn-danger" onclick="App.delLost(${i.lost_id})"><i class="bi bi-trash"></i></button></div></td></tr>`});
+    document.getElementById('main-content').innerHTML=`<div class="d-flex justify-between align-center mb-4"><h2 class="page-title animate-in" style="margin:0"><i class="bi bi-flag" style="color:var(--warning)"></i> <span class="gradient-text">My Lost Items</span></h2><a href="#report_lost" class="btn-glass btn-primary animate-in"><i class="bi bi-plus-lg"></i> Report Lost</a></div><div class="card-3d animate-in" style="animation-delay:.1s"><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>#</th><th>Image</th><th>Item</th><th>Category</th><th>Location</th><th>Status</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table></div></div>${this.footer()}`;
+  },
+  delLost(id){if(!confirm('Delete this item?'))return;DB.run("DELETE FROM lost_items WHERE lost_id=? AND user_id=?",[id,Auth.user.user_id]);this.toast('Item deleted.');this.pgMyLost()},
+
+  pgMyFound(){
+    const uid=Auth.user.user_id;const items=DB.q("SELECT f.*, c.category_name FROM found_items f JOIN categories c ON f.category_id=c.category_id WHERE f.user_id=? ORDER BY f.created_at DESC",[uid]);
+    let rows=items.length?'':'<tr><td colspan="7" class="text-center text-muted">No found items yet. <a href="#report_found" style="color:var(--primary-light)">Report one</a></td></tr>';
+    items.forEach(i=>{rows+=`<tr><td>${i.found_id}</td><td><img src="${this.imgS(i.image)||'https://placehold.co/48x48/1e293b/94a3b8?text=N/A'}" class="img-thumb"></td><td>${this.h(i.item_name)}</td><td>${this.h(i.category_name)}</td><td>${this.h(i.location)}</td><td>${this.badge(i.status)}</td><td><div class="d-flex gap-2"><a href="#edit_found?id=${i.found_id}" class="btn-glass btn-sm btn-warning"><i class="bi bi-pencil"></i></a><button class="btn-glass btn-sm btn-danger" onclick="App.delFound(${i.found_id})"><i class="bi bi-trash"></i></button></div></td></tr>`});
+    document.getElementById('main-content').innerHTML=`<div class="d-flex justify-between align-center mb-4"><h2 class="page-title animate-in" style="margin:0"><i class="bi bi-hand-index-thumb" style="color:var(--success)"></i> <span class="gradient-text">My Found Items</span></h2><a href="#report_found" class="btn-glass btn-success animate-in"><i class="bi bi-plus-lg"></i> Report Found</a></div><div class="card-3d animate-in" style="animation-delay:.1s"><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>#</th><th>Image</th><th>Item</th><th>Category</th><th>Location</th><th>Status</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table></div></div>${this.footer()}`;
+  },
+  delFound(id){if(!confirm('Delete this item?'))return;DB.run("DELETE FROM found_items WHERE found_id=? AND user_id=?",[id,Auth.user.user_id]);this.toast('Item deleted.');this.pgMyFound()},
+
+  pgEditLost(){
+    const id=new URLSearchParams(location.hash.split('?')[1]).get('id');if(!id){this.go('my_lost');return}
+    const it=DB.q1("SELECT * FROM lost_items WHERE lost_id=? AND user_id=?",[id,Auth.user.user_id]);
+    if(!it){this.toast('Item not found.','danger');this.go('my_lost');return}
+    document.getElementById('main-content').innerHTML=`<div class="auth-container" style="max-width:640px"><div class="card-3d animate-in"><h2 class="page-title"><i class="bi bi-pencil" style="color:var(--warning)"></i> Edit Lost Item</h2><form id="editLostForm">
+      <div class="form-group"><label>Item Name *</label><input type="text" class="input-glass" id="lostName" required value="${this.h(it.item_name)}"></div>
+      <div class="form-group"><label>Category *</label>${this.catSel(it.category_id)}</div>
+      <div class="form-group"><label>Description</label><textarea class="input-glass" id="lostDesc" rows="4">${this.h(it.description||'')}</textarea></div>
+      <div class="row row-2"><div class="form-group"><label>Date Lost *</label><input type="date" class="input-glass" id="lostDate" required value="${it.date_lost||''}"></div><div class="form-group"><label>Location *</label><input type="text" class="input-glass" id="lostLoc" required value="${this.h(it.location||'')}"></div></div>
+      <div class="form-group"><label>Photo</label><input type="file" class="input-glass" id="lostImg" accept="image/*">${it.image?`<div class="mt-2"><img src="${this.imgS(it.image)}" style="width:60px;height:60px;border-radius:10px;object-fit:cover"></div>`:''}</div>
+      <button type="submit" class="btn-glass btn-primary w-100 btn-lg"><i class="bi bi-save"></i> Update Item</button>
+    </form></div></div>`;
+    document.getElementById('editLostForm').onsubmit=e=>{e.preventDefault();const f=document.getElementById('lostImg').files[0];const upd=img=>{DB.run("UPDATE lost_items SET item_name=?,category_id=?,description=?,date_lost=?,location=?,image=? WHERE lost_id=? AND user_id=?",[document.getElementById('lostName').value.trim(),document.getElementById('category_id').value,document.getElementById('lostDesc').value.trim(),document.getElementById('lostDate').value,document.getElementById('lostLoc').value.trim(),img||it.image||'',id,Auth.user.user_id]);this.toast('Item updated!');this.go('my_lost')};if(f){const r=new FileReader();r.onload=ev=>upd(ev.target.result);r.readAsDataURL(f)}else upd('')};
+  },
+
+  pgEditFound(){
+    const id=new URLSearchParams(location.hash.split('?')[1]).get('id');if(!id){this.go('my_found');return}
+    const it=DB.q1("SELECT * FROM found_items WHERE found_id=? AND user_id=?",[id,Auth.user.user_id]);
+    if(!it){this.toast('Item not found.','danger');this.go('my_found');return}
+    document.getElementById('main-content').innerHTML=`<div class="auth-container" style="max-width:640px"><div class="card-3d animate-in"><h2 class="page-title"><i class="bi bi-pencil" style="color:var(--success)"></i> Edit Found Item</h2><form id="editFoundForm">
+      <div class="form-group"><label>Item Name *</label><input type="text" class="input-glass" id="fName" required value="${this.h(it.item_name)}"></div>
+      <div class="form-group"><label>Category *</label>${this.catSel(it.category_id)}</div>
+      <div class="form-group"><label>Description</label><textarea class="input-glass" id="fDesc" rows="4">${this.h(it.description||'')}</textarea></div>
+      <div class="row row-2"><div class="form-group"><label>Date Found *</label><input type="date" class="input-glass" id="fDate" required value="${it.date_found||''}"></div><div class="form-group"><label>Location *</label><input type="text" class="input-glass" id="fLoc" required value="${this.h(it.location||'')}"></div></div>
+      <div class="form-group"><label>Photo</label><input type="file" class="input-glass" id="fImg" accept="image/*">${it.image?`<div class="mt-2"><img src="${this.imgS(it.image)}" style="width:60px;height:60px;border-radius:10px;object-fit:cover"></div>`:''}</div>
+      <button type="submit" class="btn-glass btn-success w-100 btn-lg"><i class="bi bi-save"></i> Update Item</button>
+    </form></div></div>`;
+    document.getElementById('editFoundForm').onsubmit=e=>{e.preventDefault();const f=document.getElementById('fImg').files[0];const upd=img=>{DB.run("UPDATE found_items SET item_name=?,category_id=?,description=?,date_found=?,location=?,image=? WHERE found_id=? AND user_id=?",[document.getElementById('fName').value.trim(),document.getElementById('category_id').value,document.getElementById('fDesc').value.trim(),document.getElementById('fDate').value,document.getElementById('fLoc').value.trim(),img||it.image||'',id,Auth.user.user_id]);this.toast('Item updated!');this.go('my_found')};if(f){const r=new FileReader();r.onload=ev=>upd(ev.target.result);r.readAsDataURL(f)}else upd('')};
+  },
+
+  toggleTheme(){
+    this.darkMode=!this.darkMode;
+    document.documentElement.setAttribute('data-theme',this.darkMode?'dark':'light');
+    localStorage.setItem('cu_theme',this.darkMode?'dark':'light');
+    this.nav();
+  },
+
+  generateQR(text){
+    const size=120;const mc=21;const cs=Math.floor(size/mc);
+    let svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><rect width="${size}" height="${size}" fill="white"/>`;
+    let hash=0;for(let i=0;i<text.length;i++){hash=((hash<<5)-hash)+text.charCodeAt(i);hash=hash&hash}
+    const rng=()=>{hash=(hash*16807)%2147483647;return hash/2147483647};
+    for(let r=0;r<mc;r++){for(let c=0;c<mc;c++){
+      const corner=(r<7&&c<7)||(r<7&&c>=mc-7)||(r>=mc-7&&c<7);
+      const inCorner=(r>=1&&r<=5&&c>=1&&c<=5)||(r>=1&&r<=5&&c>=mc-6&&c<=mc-2)||(r>=mc-6&&r<=mc-2&&c>=1&&c<=5);
+      const isF=corner&&!inCorner||rng()>0.55;
+      if(isF)svg+=`<rect x="${c*cs}" y="${r*cs}" width="${cs}" height="${cs}" fill="#000"/>`;
+    }}
+    svg+='</svg>';return svg;
+  },
+
+  pgItemDetail(){
+    const p=new URLSearchParams(location.hash.split('?')[1]);const type=p.get('type');const id=p.get('id');
+    if(!type||!id){this.go('search');return}
+    const tbl=type==='lost'?'lost_items':'found_items';const idc=type==='lost'?'lost_id':'found_id';
+    const it=DB.q1(`SELECT ${tbl}.*, c.category_name, u.fullname, u.email, u.phone, u.student_id as rep_sid, u.faculty as rep_fac FROM ${tbl} JOIN categories c ON ${tbl}.category_id=c.category_id JOIN users u ON ${tbl}.user_id=u.user_id WHERE ${idc}=?`,[id]);
+    if(!it){this.toast('Item not found.','danger');this.go('search');return}
+    DB.run(`UPDATE ${tbl} SET views=views+1 WHERE ${idc}=?`,[id]);
+    const qr=this.generateQR(`CU-${type.toUpperCase()}-${id}-${it.item_name}`);
+    const isOwner=Auth.logged()&&Auth.user.user_id===it.user_id;
+    const img=it.image||`https://placehold.co/600x300/${this.darkMode?'1e293b':'e2e8f0'}/94a3b8?text=${encodeURIComponent(it.item_name)}`;
+    let claimBtn='';if(type==='found'&&Auth.logged()&&!isOwner&&it.status==='pending')claimBtn=`<a href="#submit_claim" class="btn-glass btn-primary btn-lg"><i class="bi bi-send"></i> Claim This Item</a>`;
+    document.getElementById('main-content').innerHTML=`
+      <div class="d-flex justify-between align-center mb-4">
+        <button class="btn-glass animate-in" onclick="history.back()"><i class="bi bi-arrow-left"></i> Back</button>
+        ${isOwner?`<div class="d-flex gap-2 animate-in"><a href="#edit_${type}?id=${id}" class="btn-glass btn-warning btn-sm"><i class="bi bi-pencil"></i> Edit</a><button class="btn-glass btn-danger btn-sm" onclick="App.delItem('${type}',${id})"><i class="bi bi-trash"></i> Delete</button></div>`:''}
+      </div>
+      <div class="row row-2 mb-5">
+        <div class="card-3d animate-in"><img src="${img}" style="width:100%;height:300px;object-fit:cover;border-radius:14px;margin-bottom:16px"><div class="d-flex gap-2 flex-wrap mb-3"><span class="badge-3d ${type==='lost'?'badge-lost':'badge-found'}"><i class="bi ${type==='lost'?'bi-flag':'bi-hand-index-thumb'}"></i> ${type==='lost'?'Lost':'Found'}</span><span class="badge-3d badge-pending">${this.h(it.category_name)}</span>${it.is_urgent?'<span class="badge-3d badge-urgent"><i class="bi bi-exclamation-triangle"></i> URGENT</span>':''}</div>
+          <h2 class="fw-bold" style="font-size:1.5rem;font-family:'Space Grotesk',sans-serif">${this.h(it.item_name)}</h2>
+          <p class="text-sm text-muted mb-4">${this.h(it.description||'No description.')}</p>
+          <div class="row row-2 mb-4">
+            <div class="d-flex align-center gap-2"><div class="stat-icon" style="width:36px;height:36px;border-radius:8px;background:rgba(245,158,11,0.1);color:var(--warning);font-size:0.9rem;flex-shrink:0"><i class="bi bi-calendar"></i></div><div><div class="text-xs text-muted">${type==='lost'?'Date Lost':'Date Found'}</div><div class="fw-bold text-sm">${it.date_lost||it.date_found||'N/A'}</div></div></div>
+            <div class="d-flex align-center gap-2"><div class="stat-icon" style="width:36px;height:36px;border-radius:8px;background:rgba(124,58,237,0.1);color:var(--accent);font-size:0.9rem;flex-shrink:0"><i class="bi bi-geo-alt"></i></div><div><div class="text-xs text-muted">Location</div><div class="fw-bold text-sm">${this.h(it.location)}</div></div></div>
+            <div class="d-flex align-center gap-2"><div class="stat-icon" style="width:36px;height:36px;border-radius:8px;background:rgba(37,99,235,0.1);color:var(--primary);font-size:0.9rem;flex-shrink:0"><i class="bi bi-building"></i></div><div><div class="text-xs text-muted">Campus</div><div class="fw-bold text-sm">${this.h(it.campus||'N/A')}</div></div></div>
+            <div class="d-flex align-center gap-2"><div class="stat-icon" style="width:36px;height:36px;border-radius:8px;background:rgba(16,185,129,0.1);color:var(--success);font-size:0.9rem;flex-shrink:0"><i class="bi bi-clock"></i></div><div><div class="text-xs text-muted">Status</div><div>${this.badge(it.status)}</div></div></div>
+          </div>
+          ${claimBtn}</div>
+        <div>
+          <div class="card-3d mb-4 animate-in" style="animation-delay:.1s"><h4 class="fw-bold mb-3"><i class="bi bi-qr-code" style="color:var(--accent)"></i> Item QR Code</h4><div class="d-flex" style="justify-content:center"><div class="qr-box">${qr}</div></div><p class="text-xs text-muted text-center mt-2">Scan to view item</p></div>
+          <div class="card-3d mb-4 animate-in" style="animation-delay:.15s"><h4 class="fw-bold mb-3"><i class="bi bi-person" style="color:var(--primary)"></i> Reported By</h4><div class="d-flex align-center gap-3"><div class="nav-avatar" style="width:48px;height:48px;font-size:1.1rem">${(it.fullname||'U').charAt(0)}</div><div><div class="fw-bold">${this.h(it.fullname)}</div><div class="text-xs text-muted">${this.h(it.rep_fac||'CU')}</div><div class="text-xs text-muted">${this.h(it.rep_sid||'')}</div></div></div></div>
+          <div class="card-3d animate-in" style="animation-delay:.2s"><h4 class="fw-bold mb-3"><i class="bi bi-info-circle" style="color:var(--info)"></i> Info</h4><div class="text-sm"><div class="d-flex justify-between mb-2"><span class="text-muted">Reported</span><span>${it.created_at||'N/A'}</span></div><div class="d-flex justify-between"><span class="text-muted">ID</span><span>#${id}</span></div></div></div>
+        </div>
+      </div>${this.footer()}`;
+  },
+
+  delItem(type,id){
+    if(!confirm('Delete this item?'))return;
+    const tbl=type==='lost'?'lost_items':'found_items';const idc=type==='lost'?'lost_id':'found_id';
+    DB.run(`DELETE FROM ${tbl} WHERE ${idc}=? AND user_id=?`,[id,Auth.user.user_id]);this.toast('Deleted.');this.go(type==='lost'?'my_lost':'my_found');
+  },
+
+  pgSearch(){
+    document.getElementById('main-content').innerHTML=`
+      <h2 class="page-title animate-in"><i class="bi bi-search gradient-text"></i> <span class="gradient-text">Search Items</span></h2>
+      <div class="card-3d mb-5 animate-in" style="animation-delay:.1s"><form id="searchForm">
+        <div class="row row-5">
+          <div class="form-group"><label>Keyword</label><input type="text" class="input-glass" id="sKw" placeholder="Name or description..."></div>
+          <div class="form-group"><label>Category</label>${this.catSel()}</div>
+          <div class="form-group"><label>Type</label><select class="input-glass" id="sType"><option value="">All</option><option value="lost">Lost</option><option value="found">Found</option></select></div>
+          <div class="form-group"><label>Location</label><input type="text" class="input-glass" id="sLoc" placeholder="Location..."></div>
+          <div class="form-group"><label>Date</label><input type="date" class="input-glass" id="sDate"></div>
+        </div>
+        <div class="d-flex gap-2"><button type="submit" class="btn-glass btn-primary"><i class="bi bi-search"></i> Search</button><button type="button" class="btn-glass" onclick="document.getElementById('searchForm').reset();App.doSearch()"><i class="bi bi-x-lg"></i> Clear</button></div>
+      </form></div><div id="searchResults"></div>${this.footer()}`;
+    document.getElementById('searchForm').onsubmit=e=>{e.preventDefault();this.doSearch()};this.doSearch();
+  },
+  doSearch(){
+    const kw=(document.getElementById('sKw')?.value||'').trim().toLowerCase();const cat=document.getElementById('category_id')?.value||'';const tp=document.getElementById('sType')?.value||'';const loc=(document.getElementById('sLoc')?.value||'').trim().toLowerCase();const dt=document.getElementById('sDate')?.value||'';
+    let res=[];
+    if(!tp||tp==='lost'){DB.q("SELECT l.*, c.category_name, 'lost' as src FROM lost_items l JOIN categories c ON l.category_id=c.category_id ORDER BY l.created_at DESC").forEach(i=>{let m=true;if(kw&&!(i.item_name||'').toLowerCase().includes(kw)&&!(i.description||'').toLowerCase().includes(kw))m=false;if(cat&&i.category_id!=cat)m=false;if(loc&&!(i.location||'').toLowerCase().includes(loc))m=false;if(dt&&i.date_lost!==dt)m=false;if(m)res.push(i)})}
+    if(!tp||tp==='found'){DB.q("SELECT f.*, c.category_name, 'found' as src FROM found_items f JOIN categories c ON f.category_id=c.category_id ORDER BY f.created_at DESC").forEach(i=>{let m=true;if(kw&&!(i.item_name||'').toLowerCase().includes(kw)&&!(i.description||'').toLowerCase().includes(kw))m=false;if(cat&&i.category_id!=cat)m=false;if(loc&&!(i.location||'').toLowerCase().includes(loc))m=false;if(dt&&i.date_found!==dt)m=false;if(m)res.push(i)})}
+    res.sort((a,b)=>(b.created_at||'').localeCompare(a.created_at||''));
+    const c=document.getElementById('searchResults');
+    if(!res.length){c.innerHTML='<div class="empty-state animate-in"><i class="bi bi-search"></i><h4>No items found</h4><p>Try adjusting your search criteria</p></div>';return}
+    let cards='';res.forEach((i,idx)=>{cards+=`<div class="card-3d animate-in" style="${this.animDelay(idx)}"><img src="${this.imgS(i.image)||'https://placehold.co/400x200/1e293b/94a3b8?text=No+Image'}" style="width:100%;height:180px;object-fit:cover;border-radius:12px;margin-bottom:16px"><div class="d-flex gap-2 mb-2"><span class="badge-3d ${i.src==='lost'?'badge-lost':'badge-found'}"><i class="bi ${i.src==='lost'?'bi-flag':'bi-hand-index-thumb'}"></i> ${i.src==='lost'?'Lost':'Found'}</span><span class="badge-3d badge-pending">${this.h(i.category_name)}</span></div><h4 class="fw-bold mb-2">${this.h(i.item_name)}</h4><p class="text-sm text-muted mb-2"><i class="bi bi-geo-alt"></i> ${this.h(i.location)}</p><p class="text-sm text-muted mb-3" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${this.h(i.description||'No description')}</p><div class="d-flex justify-between align-center">${this.badge(i.status)}<span class="text-xs text-muted">${i.created_at||''}</span></div></div>`});
+    c.innerHTML=`<div class="row row-3">${cards}</div>`;
+  },
+
+  pgClaim(){
+    const items=DB.q("SELECT f.*, c.category_name, u.fullname FROM found_items f JOIN categories c ON f.category_id=c.category_id JOIN users u ON f.user_id=u.user_id WHERE f.status='pending' ORDER BY f.created_at DESC");
+    let ic='';let io='<option value="">Select an item...</option>';
+    items.forEach(i=>{io+=`<option value="${i.found_id}">${this.h(i.item_name)} - ${this.h(i.location)} (${this.h(i.category_name)})</option>`;ic+=`<div class="card-3d mb-2" style="cursor:pointer;padding:14px" onclick="document.getElementById('claimFoundId').value='${i.found_id}'"><h5 class="fw-bold mb-1" style="font-size:0.95rem">${this.h(i.item_name)}</h5><p class="text-xs text-muted"><i class="bi bi-geo-alt"></i> ${this.h(i.location)} | ${i.date_found||''}</p></div>`});
+    document.getElementById('main-content').innerHTML=`<h2 class="page-title animate-in"><i class="bi bi-send gradient-text"></i> <span class="gradient-text">Submit Claim</span></h2><div class="row row-2">
+      <div class="animate-in"><div class="card-3d"><h3 class="fw-bold mb-4"><i class="bi bi-hand-index-thumb" style="color:var(--success)"></i> Available Found Items</h3><div class="scroll-y">${ic||'<div class="empty-state"><i class="bi bi-inbox"></i><p>No pending found items</p></div>'}</div></div></div>
+      <div class="animate-in" style="animation-delay:.1s"><div class="card-3d"><h3 class="fw-bold mb-4"><i class="bi bi-send" style="color:var(--primary-light)"></i> Claim Form</h3><form id="claimForm">
+        <div class="form-group"><label>Select Item *</label><select class="input-glass" id="claimFoundId" required>${io}</select></div>
+        <div class="form-group"><label>Reason for Ownership *</label><textarea class="input-glass" id="claimReason" rows="3" required placeholder="Why do you believe this item belongs to you?"></textarea></div>
+        <div class="form-group"><label>Item Description *</label><textarea class="input-glass" id="claimDesc" rows="3" required placeholder="Color, brand, unique marks..."></textarea></div>
+        <div class="form-group"><label>Evidence (photo/receipt)</label><input type="file" class="input-glass" id="claimEv" accept="image/*"></div>
+        <button type="submit" class="btn-glass btn-primary w-100 btn-lg"><i class="bi bi-send"></i> Submit Claim</button>
+      </form></div></div></div>${this.footer()}`;
+    document.getElementById('claimForm').onsubmit=e=>{e.preventDefault();const fid=document.getElementById('claimFoundId').value;if(!fid){this.toast('Please select an item.','warning');return}const ef=document.getElementById('claimEv').files[0];const ins=ev=>{DB.run("INSERT INTO claims(found_id,claimant_id,reason,item_description,evidence,claim_date,status) VALUES(?,?,?,?,?,?,?)",[fid,Auth.user.user_id,document.getElementById('claimReason').value.trim(),document.getElementById('claimDesc').value.trim(),ev||'',new Date().toISOString().split('T')[0],'pending']);DB.run("INSERT INTO notifications(user_id,message,status) VALUES(?,?,?)",[Auth.user.user_id,'Your claim has been submitted for review.','unread']);this.toast('Claim submitted!');this.go('my_claims')};if(ef){const r=new FileReader();r.onload=ev=>ins(ev.target.result);r.readAsDataURL(ef)}else ins('')};
+  },
+
+  pgMyClaims(){
+    const uid=Auth.user.user_id;const claims=DB.q("SELECT cl.*, fi.item_name, fi.location, fi.date_found FROM claims cl JOIN found_items fi ON cl.found_id=fi.found_id WHERE cl.claimant_id=? ORDER BY cl.created_at DESC",[uid]);
+    let rows=claims.length?'':'<tr><td colspan="6" class="text-center text-muted">No claims yet. <a href="#submit_claim" style="color:var(--primary-light)">Submit one</a></td></tr>';
+    claims.forEach(c=>{rows+=`<tr><td>${c.claim_id}</td><td>${this.h(c.item_name)}</td><td>${this.h(c.location)}</td><td>${c.date_found||''}</td><td>${c.claim_date||''}</td><td>${this.badge(c.status)}</td></tr>`});
+    document.getElementById('main-content').innerHTML=`<h2 class="page-title animate-in"><i class="bi bi-clipboard-check gradient-text"></i> <span class="gradient-text">My Claims</span></h2><div class="card-3d animate-in" style="animation-delay:.1s"><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>#</th><th>Item</th><th>Location</th><th>Date Found</th><th>Claim Date</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div></div>${this.footer()}`;
+  },
+
+  pgNotifs(){
+    const uid=Auth.user.user_id;DB.run("UPDATE notifications SET status='read' WHERE user_id=? AND status='unread'",[uid]);
+    const ns=DB.q("SELECT * FROM notifications WHERE user_id=? ORDER BY created_at DESC",[uid]);
+    let items=ns.length?'':'<div class="empty-state"><i class="bi bi-bell-slash"></i><p>No notifications</p></div>';
+    ns.forEach(n=>{let icon='bi-info-circle';let clr='var(--primary-light)';if(n.message.includes('approved')){icon='bi-check-circle-fill';clr='var(--success)'}else if(n.message.includes('rejected')){icon='bi-x-circle-fill';clr='var(--danger)'}items+=`<div class="card-3d mb-2 animate-in" style="padding:16px"><div class="d-flex gap-3 align-center"><i class="bi ${icon}" style="font-size:1.3rem;color:${clr}"></i><div><p style="font-weight:500">${this.h(n.message)}</p><p class="text-xs text-muted mt-1">${n.created_at}</p></div></div></div>`});
+    document.getElementById('main-content').innerHTML=`<h2 class="page-title animate-in"><i class="bi bi-bell gradient-text"></i> <span class="gradient-text">Notifications</span></h2>${items}${this.footer()}`;this.nav();
+  },
+
+  pgProfile(){
+    const u=DB.q1("SELECT * FROM users WHERE user_id=?",Auth.user.user_id);
+    document.getElementById('main-content').innerHTML=`<h2 class="page-title animate-in"><i class="bi bi-person-circle gradient-text"></i> <span class="gradient-text">My Profile</span></h2>
+      <div class="card-3d animate-in" style="max-width:700px"><div class="row row-2 mb-4">
+        <div><label>Full Name</label><div class="input-glass" style="pointer-events:none;padding:12px 16px">${this.h(u.fullname)}</div></div>
+        <div><label>Email</label><div class="input-glass" style="pointer-events:none;padding:12px 16px">${this.h(u.email)}</div></div>
+      </div>      <div class="row row-2 mb-4">
+        <div><label>Student ID</label><div class="input-glass" style="pointer-events:none;padding:12px 16px">${this.h(u.student_id||'N/A')}</div></div>
+        <div><label>Phone</label><div class="input-glass" style="pointer-events:none;padding:12px 16px">${this.h(u.phone||'N/A')}</div></div>
+      </div><div class="row row-3 mb-4">
+        <div><label>Campus</label><div class="input-glass" style="pointer-events:none;padding:12px 16px">${this.h(u.campus||'N/A')}</div></div>
+        <div><label>Faculty</label><div class="input-glass" style="pointer-events:none;padding:12px 16px">${this.h(u.faculty||'N/A')}</div></div>
+        <div><label>Course</label><div class="input-glass" style="pointer-events:none;padding:12px 16px">${this.h(u.course||'N/A')}</div></div>
+      </div><div class="row row-2">
+        <div><label>Year of Study</label><div class="input-glass" style="pointer-events:none;padding:12px 16px">Year ${this.h(u.year_of_study||'N/A')}</div></div>
+        <div><label>Semester</label><div class="input-glass" style="pointer-events:none;padding:12px 16px">Semester ${this.h(u.semester||'N/A')}</div></div>
+      </div><div class="divider"></div><div class="d-flex justify-between align-center"><p class="text-sm text-muted">Role: ${Auth.roleBadge(u.role)} &nbsp; Joined: ${u.created_at||''}</p><div class="d-flex gap-2"><a href="#user_settings" class="btn-glass btn-sm btn-warning"><i class="bi bi-pencil"></i> Edit Profile</a><a href="#my_activity" class="btn-glass btn-sm btn-info"><i class="bi bi-activity"></i> Activity</a></div></div></div>${this.footer()}`;
+  },
+
+  pgAdminUsers(){
+    const users=DB.q("SELECT * FROM users ORDER BY created_at DESC");let rows='';
+    users.forEach(u=>{rows+=`<tr><td>${u.user_id}</td><td><div class="d-flex align-center gap-2"><div class="nav-avatar" style="width:32px;height:32px;font-size:0.7rem;border-radius:8px">${(u.fullname||'U').charAt(0)}</div><div><div class="fw-bold text-sm">${this.h(u.fullname)}</div><div class="text-xs text-muted">${this.h(u.email)}</div></div></div></td><td>${this.h(u.phone||'N/A')}</td><td>${this.h(u.student_id||'N/A')}</td><td>${this.h(u.faculty||'N/A')}</td><td><span class="badge-3d ${u.role==='admin'?'badge-admin':'badge-user'}">${this.h(u.role)}</span></td><td>${u.created_at||''}</td><td>${u.role!=='admin'?`<button class="btn-glass btn-sm btn-danger" onclick="App.delUser(${u.user_id})"><i class="bi bi-trash"></i></button>`:'<span class="text-muted text-sm">-</span>'}</td></tr>`});
+    document.getElementById('main-content').innerHTML=`<h2 class="page-title animate-in"><i class="bi bi-people gradient-text"></i> <span class="gradient-text">Manage Users</span></h2><div class="card-3d animate-in" style="animation-delay:.1s"><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>ID</th><th>User</th><th>Phone</th><th>Student ID</th><th>Faculty</th><th>Role</th><th>Joined</th><th>Action</th></tr></thead><tbody>${rows}</tbody></table></div></div>${this.footer()}`;
+  },
+  delUser(id){if(!confirm('Delete this user?'))return;DB.run("DELETE FROM users WHERE user_id=? AND role != 'admin'",[id]);this.toast('User deleted.');this.pgAdminUsers()},
+
+  pgAdminCats(){
+    const params=new URLSearchParams(location.hash.split('?')[1]);const eid=params.get('edit');let en='';if(eid){const c=DB.q1("SELECT * FROM categories WHERE category_id=?",eid);if(c)en=c.category_name}
+    const cats=DB.q("SELECT * FROM categories ORDER BY category_name");let rows='';
+    cats.forEach(c=>{rows+=`<tr><td>${c.category_id}</td><td><div class="d-flex align-center gap-2"><i class="bi ${c.icon||'bi-question-circle'}" style="font-size:1.2rem;color:var(--primary-light)"></i>${this.h(c.category_name)}</div></td><td><div class="d-flex gap-2"><a href="#admin_categories?edit=${c.category_id}" class="btn-glass btn-sm btn-warning"><i class="bi bi-pencil"></i></a><button class="btn-glass btn-sm btn-danger" onclick="App.delCat(${c.category_id})"><i class="bi bi-trash"></i></button></div></td></tr>`});
+    document.getElementById('main-content').innerHTML=`<h2 class="page-title animate-in"><i class="bi bi-tags gradient-text"></i> <span class="gradient-text">Manage Categories</span></h2><div class="row row-2"><div class="card-3d animate-in"><h3 class="fw-bold mb-4">${eid?'Edit':'Add'} Category</h3><form id="catForm"><div class="form-group"><label>Category Name *</label><input type="text" class="input-glass" id="catName" required value="${this.h(en)}" placeholder="Category name"></div><button type="submit" class="btn-glass btn-primary w-100"><i class="bi bi-save"></i> ${eid?'Update':'Add'} Category</button></form>${eid?'<a href="#admin_categories" class="btn-glass w-100 mt-2 text-center" style="justify-content:center"><i class="bi bi-x-lg"></i> Cancel Edit</a>':''}</div><div class="card-3d animate-in" style="animation-delay:.1s"><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>ID</th><th>Category</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table></div></div></div>${this.footer()}`;
+    document.getElementById('catForm').onsubmit=e=>{e.preventDefault();const n=document.getElementById('catName').value.trim();if(!n)return;if(eid){DB.run("UPDATE categories SET category_name=? WHERE category_id=?",[n,eid]);this.toast('Category updated!')}else{DB.run("INSERT INTO categories(category_name) VALUES(?)",[n]);this.toast('Category added!')}this.go('admin_categories')};
+  },
+  delCat(id){if(!confirm('Delete category?'))return;DB.run("DELETE FROM categories WHERE category_id=?",[id]);this.toast('Category deleted.');this.pgAdminCats()},
+
+  pgAdminLost(){
+    const items=DB.q("SELECT l.*, c.category_name, u.fullname FROM lost_items l JOIN categories c ON l.category_id=c.category_id JOIN users u ON l.user_id=u.user_id ORDER BY l.created_at DESC");let rows='';
+    items.forEach(i=>{rows+=`<tr><td>${i.lost_id}</td><td><img src="${this.imgS(i.image)||'https://placehold.co/48x48/1e293b/94a3b8?text=N/A'}" class="img-thumb"></td><td>${this.h(i.item_name)}</td><td>${this.h(i.category_name)}</td><td>${this.h(i.fullname)}</td><td>${this.h(i.location)}</td><td>${i.date_lost||''}</td><td>${this.badge(i.status)}</td><td><div class="d-flex gap-2">${i.status!=='resolved'?`<button class="btn-glass btn-sm btn-success" onclick="App.markLostOk(${i.lost_id})"><i class="bi bi-check-lg"></i></button>`:''}<button class="btn-glass btn-sm btn-danger" onclick="App.adminDelLost(${i.lost_id})"><i class="bi bi-trash"></i></button></div></td></tr>`});
+    document.getElementById('main-content').innerHTML=`<h2 class="page-title animate-in"><i class="bi bi-flag gradient-text"></i> <span class="gradient-text">Manage Lost Items</span></h2><div class="card-3d animate-in" style="animation-delay:.1s"><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>#</th><th>Image</th><th>Item</th><th>Category</th><th>Reported By</th><th>Location</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody>${rows||'<tr><td colspan="9" class="text-center text-muted">No lost items</td></tr>'}</tbody></table></div></div>${this.footer()}`;
+  },
+  markLostOk(id){if(!confirm('Mark as resolved?'))return;DB.run("UPDATE lost_items SET status='resolved' WHERE lost_id=?",[id]);this.toast('Marked as resolved!');this.pgAdminLost()},
+  adminDelLost(id){if(!confirm('Delete?'))return;DB.run("DELETE FROM lost_items WHERE lost_id=?",[id]);this.toast('Deleted!');this.pgAdminLost()},
+
+  pgAdminFound(){
+    const items=DB.q("SELECT f.*, c.category_name, u.fullname FROM found_items f JOIN categories c ON f.category_id=c.category_id JOIN users u ON f.user_id=u.user_id ORDER BY f.created_at DESC");let rows='';
+    items.forEach(i=>{rows+=`<tr><td>${i.found_id}</td><td><img src="${this.imgS(i.image)||'https://placehold.co/48x48/1e293b/94a3b8?text=N/A'}" class="img-thumb"></td><td>${this.h(i.item_name)}</td><td>${this.h(i.category_name)}</td><td>${this.h(i.fullname)}</td><td>${this.h(i.location)}</td><td>${i.date_found||''}</td><td>${this.badge(i.status)}</td><td><div class="d-flex gap-2">${i.status!=='returned'?`<button class="btn-glass btn-sm btn-success" onclick="App.markFoundOk(${i.found_id})"><i class="bi bi-check-lg"></i></button>`:''}<button class="btn-glass btn-sm btn-danger" onclick="App.adminDelFound(${i.found_id})"><i class="bi bi-trash"></i></button></div></td></tr>`});
+    document.getElementById('main-content').innerHTML=`<h2 class="page-title animate-in"><i class="bi bi-hand-index-thumb gradient-text"></i> <span class="gradient-text">Manage Found Items</span></h2><div class="card-3d animate-in" style="animation-delay:.1s"><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>#</th><th>Image</th><th>Item</th><th>Category</th><th>Reported By</th><th>Location</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody>${rows||'<tr><td colspan="9" class="text-center text-muted">No found items</td></tr>'}</tbody></table></div></div>${this.footer()}`;
+  },
+  markFoundOk(id){if(!confirm('Mark as returned?'))return;DB.run("UPDATE found_items SET status='returned' WHERE found_id=?",[id]);this.toast('Marked as returned!');this.pgAdminFound()},
+  adminDelFound(id){if(!confirm('Delete?'))return;DB.run("DELETE FROM found_items WHERE found_id=?",[id]);this.toast('Deleted!');this.pgAdminFound()},
+
+  pgAdminClaims(){
+    const claims=DB.q("SELECT cl.*, fi.item_name, u.fullname, u.email FROM claims cl JOIN found_items fi ON cl.found_id=fi.found_id JOIN users u ON cl.claimant_id=u.user_id ORDER BY cl.created_at DESC");let rows='';
+    claims.forEach(c=>{let a='';if(c.status==='pending'){a=`<button class="btn-glass btn-sm btn-success" onclick="App.approveCl(${c.claim_id},${c.found_id})"><i class="bi bi-check-lg"></i></button> <button class="btn-glass btn-sm btn-danger" onclick="App.rejectCl(${c.claim_id})"><i class="bi bi-x-lg"></i></button>`}rows+=`<tr><td>${c.claim_id}</td><td>${this.h(c.item_name)}</td><td><div class="fw-bold text-sm">${this.h(c.fullname)}</div><div class="text-xs text-muted">${this.h(c.email)}</div></td><td class="text-sm">${this.h((c.reason||'').substring(0,60))}${(c.reason||'').length>60?'...':''}</td><td>${c.claim_date||''}</td><td>${this.badge(c.status)}</td><td><div class="d-flex gap-2">${a}<button class="btn-glass btn-sm btn-danger" onclick="App.delCl(${c.claim_id})"><i class="bi bi-trash"></i></button></div></td></tr>`});
+    document.getElementById('main-content').innerHTML=`<h2 class="page-title animate-in"><i class="bi bi-clipboard-check gradient-text"></i> <span class="gradient-text">Manage Claims</span></h2><div class="card-3d animate-in" style="animation-delay:.1s"><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>#</th><th>Item</th><th>Claimant</th><th>Reason</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody>${rows||'<tr><td colspan="7" class="text-center text-muted">No claims</td></tr>'}</tbody></table></div></div>${this.footer()}`;
+  },
+  approveCl(cid,fid){if(!confirm('Approve this claim?'))return;const cl=DB.q1("SELECT * FROM claims WHERE claim_id=?",cid);DB.run("UPDATE claims SET status='approved' WHERE claim_id=?",cid);DB.run("UPDATE found_items SET status='returned' WHERE found_id=?",fid);if(cl)DB.run("INSERT INTO notifications(user_id,message,status) VALUES(?,?,?)",[cl.claimant_id,`Your claim for item #${cid} has been approved!`,'unread']);this.toast('Claim approved!');this.pgAdminClaims()},
+  rejectCl(cid){if(!confirm('Reject this claim?'))return;const cl=DB.q1("SELECT * FROM claims WHERE claim_id=?",cid);DB.run("UPDATE claims SET status='rejected' WHERE claim_id=?",cid);if(cl)DB.run("INSERT INTO notifications(user_id,message,status) VALUES(?,?,?)",[cl.claimant_id,`Your claim for item #${cid} has been rejected.`,'unread']);this.toast('Claim rejected.','danger');this.pgAdminClaims()},
+  delCl(id){if(!confirm('Delete?'))return;DB.run("DELETE FROM claims WHERE claim_id=?",id);this.toast('Deleted!');this.pgAdminClaims()},
+
+  pgAdminReports(){
+    const params=new URLSearchParams(location.hash.split('?')[1]);const tab=params.get('tab')||'summary';let content='';
+    if(tab==='summary'){
+      const u=DB.q1("SELECT COUNT(*) as c FROM users").c;const l=DB.q1("SELECT COUNT(*) as c FROM lost_items").c;const f=DB.q1("SELECT COUNT(*) as c FROM found_items").c;const a=DB.q1("SELECT COUNT(*) as c FROM claims WHERE status='approved'").c;const r=DB.q1("SELECT COUNT(*) as c FROM claims WHERE status='rejected'").c;const p=DB.q1("SELECT COUNT(*) as c FROM claims WHERE status='pending'").c;
+      content=`<div class="row row-3 mb-4"><div class="stat-card animate-in"><div class="stat-icon" style="background:rgba(99,102,241,0.15);color:var(--primary-light)"><i class="bi bi-people"></i></div><h2 style="color:var(--primary-light)">${u}</h2><p>Users</p></div><div class="stat-card animate-in" style="animation-delay:.1s"><div class="stat-icon" style="background:rgba(245,158,11,0.15);color:var(--warning)"><i class="bi bi-flag"></i></div><h2 style="color:var(--warning)">${l}</h2><p>Lost Items</p></div><div class="stat-card animate-in" style="animation-delay:.2s"><div class="stat-icon" style="background:rgba(16,185,129,0.15);color:var(--success)"><i class="bi bi-hand-index-thumb"></i></div><h2 style="color:var(--success)">${f}</h2><p>Found Items</p></div></div><div class="row row-3"><div class="stat-card animate-in"><div class="stat-icon" style="background:rgba(16,185,129,0.15);color:var(--success)"><i class="bi bi-check-circle"></i></div><h2 style="color:var(--success)">${a}</h2><p>Approved</p></div><div class="stat-card animate-in" style="animation-delay:.1s"><div class="stat-icon" style="background:rgba(239,68,68,0.15);color:var(--danger)"><i class="bi bi-x-circle"></i></div><h2 style="color:var(--danger)">${r}</h2><p>Rejected</p></div><div class="stat-card animate-in" style="animation-delay:.2s"><div class="stat-icon" style="background:rgba(245,158,11,0.15);color:var(--warning)"><i class="bi bi-hourglass-split"></i></div><h2 style="color:var(--warning)">${p}</h2><p>Pending</p></div></div>`;
+    }else if(tab==='users'){
+      let tr='';DB.q("SELECT * FROM users ORDER BY created_at DESC").forEach((u,i)=>{tr+=`<tr><td>${i+1}</td><td>${this.h(u.fullname)}</td><td>${this.h(u.email)}</td><td>${this.h(u.student_id||'N/A')}</td><td>${this.h(u.faculty||'N/A')}</td><td><span class="badge-3d ${u.role==='admin'?'badge-admin':'badge-user'}">${this.h(u.role)}</span></td><td>${u.created_at||''}</td></tr>`});
+      content=`<div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Student ID</th><th>Faculty</th><th>Role</th><th>Joined</th></tr></thead><tbody>${tr}</tbody></table></div>`;
+    }else if(tab==='lost'){
+      let tr='';DB.q("SELECT l.*, c.category_name, u.fullname FROM lost_items l JOIN categories c ON l.category_id=c.category_id JOIN users u ON l.user_id=u.user_id ORDER BY l.created_at DESC").forEach((i,idx)=>{tr+=`<tr><td>${idx+1}</td><td>${this.h(i.item_name)}</td><td>${this.h(i.category_name)}</td><td>${this.h(i.fullname)}</td><td>${this.h(i.location)}</td><td>${i.date_lost||''}</td><td>${this.badge(i.status)}</td></tr>`});
+      content=`<div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>#</th><th>Item</th><th>Category</th><th>Reported By</th><th>Location</th><th>Date</th><th>Status</th></tr></thead><tbody>${tr||'<tr><td colspan="7" class="text-center text-muted">No data</td></tr>'}</tbody></table></div>`;
+    }else if(tab==='found'){
+      let tr='';DB.q("SELECT f.*, c.category_name, u.fullname FROM found_items f JOIN categories c ON f.category_id=c.category_id JOIN users u ON f.user_id=u.user_id ORDER BY f.created_at DESC").forEach((i,idx)=>{tr+=`<tr><td>${idx+1}</td><td>${this.h(i.item_name)}</td><td>${this.h(i.category_name)}</td><td>${this.h(i.fullname)}</td><td>${this.h(i.location)}</td><td>${i.date_found||''}</td><td>${this.badge(i.status)}</td></tr>`});
+      content=`<div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>#</th><th>Item</th><th>Category</th><th>Reported By</th><th>Location</th><th>Date</th><th>Status</th></tr></thead><tbody>${tr||'<tr><td colspan="7" class="text-center text-muted">No data</td></tr>'}</tbody></table></div>`;
+    }else if(tab==='approved'){
+      let tr='';DB.q("SELECT cl.*, fi.item_name, u.fullname FROM claims cl JOIN found_items fi ON cl.found_id=fi.found_id JOIN users u ON cl.claimant_id=u.user_id WHERE cl.status='approved' ORDER BY cl.created_at DESC").forEach((c,i)=>{tr+=`<tr><td>${i+1}</td><td>${this.h(c.item_name)}</td><td>${this.h(c.fullname)}</td><td>${c.claim_date||''}</td></tr>`});
+      content=`<div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>#</th><th>Item</th><th>Claimant</th><th>Date</th></tr></thead><tbody>${tr||'<tr><td colspan="4" class="text-center text-muted">No data</td></tr>'}</tbody></table></div>`;
+    }else if(tab==='rejected'){
+      let tr='';DB.q("SELECT cl.*, fi.item_name, u.fullname FROM claims cl JOIN found_items fi ON cl.found_id=fi.found_id JOIN users u ON cl.claimant_id=u.user_id WHERE cl.status='rejected' ORDER BY cl.created_at DESC").forEach((c,i)=>{tr+=`<tr><td>${i+1}</td><td>${this.h(c.item_name)}</td><td>${this.h(c.fullname)}</td><td>${c.claim_date||''}</td></tr>`});
+      content=`<div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>#</th><th>Item</th><th>Claimant</th><th>Date</th></tr></thead><tbody>${tr||'<tr><td colspan="4" class="text-center text-muted">No data</td></tr>'}</tbody></table></div>`;
+    }
+    const tabs=[{k:'summary',l:'Summary',i:'bi-grid'},{k:'users',l:'Users',i:'bi-people'},{k:'lost',l:'Lost Items',i:'bi-flag'},{k:'found',l:'Found Items',i:'bi-hand-index-thumb'},{k:'approved',l:'Approved',i:'bi-check-circle'},{k:'rejected',l:'Rejected',i:'bi-x-circle'}];
+    let tb=tabs.map(t=>`<a href="#admin_reports?tab=${t.k}" class="btn-glass btn-sm ${tab===t.k?'btn-primary':''}"><i class="bi ${t.i}"></i> ${t.l}</a>`).join('');
+    document.getElementById('main-content').innerHTML=`<div class="d-flex justify-between align-center mb-4"><h2 class="page-title animate-in" style="margin:0"><i class="bi bi-bar-chart gradient-text"></i> <span class="gradient-text">Reports</span></h2><button class="btn-glass no-print" onclick="window.print()"><i class="bi bi-printer"></i> Print</button></div><div class="d-flex gap-2 mb-4 flex-wrap no-print animate-in" style="animation-delay:.1s">${tb}</div><div class="card-3d animate-in" style="animation-delay:.2s">${content}</div>${this.footer()}`;
+  },
+
+  pgMyActivity(){
+    const uid=Auth.user.user_id;const logs=DB.q("SELECT * FROM audit_log WHERE user_id=? ORDER BY created_at DESC LIMIT 50",[uid]);
+    const myLost=DB.q1("SELECT COUNT(*) as c FROM lost_items WHERE user_id=?",[uid]).c;
+    const myFound=DB.q1("SELECT COUNT(*) as c FROM found_items WHERE user_id=?",[uid]).c;
+    const myClaims=DB.q1("SELECT COUNT(*) as c FROM claims WHERE claimant_id=?",[uid]).c;
+    const approved=DB.q1("SELECT COUNT(*) as c FROM claims WHERE claimant_id=? AND status='approved'",[uid]).c;
+    let timeline='';logs.forEach(l=>{const icons={login:'bi-box-arrow-in-right',logout:'bi-box-arrow-right',register:'bi-person-plus',report_lost:'bi-flag',report_found:'bi-hand-index-thumb',claim:'bi-send',save:'bi-bookmark',message:'bi-envelope',delete:'bi-trash',update:'bi-pencil'};const colors={login:'var(--success)',logout:'var(--text-muted)',register:'var(--primary)',report_lost:'var(--warning)',report_found:'var(--success)',claim:'var(--accent)',save:'var(--info)',message:'var(--accent2)',delete:'var(--danger)',update:'var(--warning)'};timeline+=`<div class="timeline-item animate-in"><div class="d-flex justify-between"><div class="d-flex gap-2 align-center"><i class="bi ${icons[l.action]||'bi-circle'}" style="color:${colors[l.action]||'var(--primary-light)'}"></i><span class="fw-bold text-sm">${this.h(l.action)}</span></div><span class="text-xs text-muted">${l.created_at}</span></div><p class="text-sm text-muted mt-1">${this.h(l.details||'')}</p></div>`});
+    document.getElementById('main-content').innerHTML=`
+      <h2 class="page-title animate-in"><i class="bi bi-activity gradient-text"></i> <span class="gradient-text">My Activity</span></h2>
+      <div class="row row-4 mb-5">
+        <div class="stat-card animate-in"><div class="stat-icon" style="background:rgba(245,158,11,0.15);color:var(--warning)"><i class="bi bi-flag"></i></div><h2 style="color:var(--warning)">${myLost}</h2><p>Lost Reported</p></div>
+        <div class="stat-card animate-in" style="animation-delay:.1s"><div class="stat-icon" style="background:rgba(16,185,129,0.15);color:var(--success)"><i class="bi bi-hand-index-thumb"></i></div><h2 style="color:var(--success)">${myFound}</h2><p>Found Reported</p></div>
+        <div class="stat-card animate-in" style="animation-delay:.2s"><div class="stat-icon" style="background:rgba(139,92,246,0.15);color:var(--accent)"><i class="bi bi-send"></i></div><h2 style="color:var(--accent)">${myClaims}</h2><p>Claims Made</p></div>
+        <div class="stat-card animate-in" style="animation-delay:.3s"><div class="stat-icon" style="background:rgba(6,182,212,0.15);color:var(--info)"><i class="bi bi-check-circle"></i></div><h2 style="color:var(--info)">${approved}</h2><p>Approved</p></div>
+      </div>
+      <div class="card-3d animate-in" style="animation-delay:.4s"><h3 class="fw-bold mb-4"><i class="bi bi-clock-history" style="color:var(--primary-light)"></i> Activity Timeline</h3>${timeline||'<div class="empty-state"><i class="bi bi-activity"></i><p>No activity recorded yet</p></div>'}</div>${this.footer()}`;
+  },
+
+  pgSavedItems(){
+    const uid=Auth.user.user_id;const saved=DB.q("SELECT s.*, CASE WHEN s.item_type='lost' THEN li.item_name ELSE fi.item_name END as item_name, CASE WHEN s.item_type='lost' THEN li.description ELSE fi.description END as description, CASE WHEN s.item_type='lost' THEN li.image ELSE fi.image END as image, CASE WHEN s.item_type='lost' THEN li.location ELSE fi.location END as location, CASE WHEN s.item_type='lost' THEN li.status ELSE fi.status END as status, c.category_name FROM saved_items s LEFT JOIN lost_items li ON s.item_type='lost' AND s.item_id=li.lost_id LEFT JOIN found_items fi ON s.item_type='found' AND s.item_id=fi.found_id LEFT JOIN categories c ON COALESCE(li.category_id,fi.category_id)=c.category_id WHERE s.user_id=? ORDER BY s.created_at DESC",[uid]);
+    let cards='';saved.forEach((s,i)=>{if(!s.item_name)return;cards+=`<div class="card-3d animate-in" style="${this.animDelay(i)}"><img src="${this.imgS(s.image)||'https://placehold.co/400x200/1e293b/94a3b8?text=No+Image'}" style="width:100%;height:160px;object-fit:cover;border-radius:12px;margin-bottom:12px"><div class="d-flex gap-2 mb-2"><span class="badge-3d ${s.item_type==='lost'?'badge-lost':'badge-found'}">${s.item_type==='lost'?'Lost':'Found'}</span><span class="badge-3d badge-pending">${this.h(s.category_name||'')}</span></div><h4 class="fw-bold mb-1">${this.h(s.item_name)}</h4><p class="text-xs text-muted mb-2"><i class="bi bi-geo-alt"></i> ${this.h(s.location||'')}</p><div class="d-flex justify-between align-center"><a href="#item_detail?type=${s.item_type}&id=${s.item_id}" class="btn-glass btn-sm btn-primary"><i class="bi bi-eye"></i> View</a><button class="btn-glass btn-sm btn-danger" onclick="App.unsave(${s.save_id})"><i class="bi bi-bookmark-fill"></i> Unsave</button></div></div>`});
+    document.getElementById('main-content').innerHTML=`
+      <h2 class="page-title animate-in"><i class="bi bi-bookmark gradient-text"></i> <span class="gradient-text">Saved Items</span></h2>
+      ${cards?`<div class="row row-3">${cards}</div>`:'<div class="empty-state animate-in"><i class="bi bi-bookmark"></i><h4>No saved items</h4><p>Browse items and save them for later</p><a href="#search" class="btn-glass btn-primary mt-3"><i class="bi bi-search"></i> Search Items</a></div>'}${this.footer()}`;
+  },
+  unsave(id){DB.run("DELETE FROM saved_items WHERE save_id=? AND user_id=?",[id,Auth.user.user_id]);this.toast('Item removed from saved.');this.pgSavedItems()},
+
+  pgMessages(){
+    const uid=Auth.user.user_id;
+    const convos=DB.q(`SELECT m.*, u.fullname as other_name, u.user_id as other_id FROM messages m JOIN users u ON (CASE WHEN m.sender_id=? THEN m.receiver_id ELSE m.sender_id END)=u.user_id WHERE m.sender_id=? OR m.receiver_id=? GROUP BY other_id ORDER BY m.created_at DESC`,[uid,uid,uid]);
+    let items='';convos.forEach(c=>{const unread=c.sender_id===uid?0:DB.q1("SELECT COUNT(*) as c FROM messages WHERE sender_id=? AND receiver_id=? AND is_read=0",[c.other_id,uid]).c;items+=`<a href="#message_detail?id=${c.other_id}" style="text-decoration:none;color:var(--text)"><div class="card-3d mb-2 animate-in" style="padding:16px;cursor:pointer"><div class="d-flex gap-3 align-center"><div class="nav-avatar" style="width:44px;height:44px">${(c.other_name||'U').charAt(0)}</div><div class="flex-1"><div class="d-flex justify-between"><span class="fw-bold">${this.h(c.other_name)}</span><span class="text-xs text-muted">${c.created_at}</span></div><p class="text-sm text-muted" style="display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden">${this.h(c.message)}</p></div>${unread>0?`<span class="notif-badge">${unread}</span>`:''}</div></div></a>`});
+    document.getElementById('main-content').innerHTML=`
+      <div class="d-flex justify-between align-center mb-4"><h2 class="page-title animate-in" style="margin:0"><i class="bi bi-envelope gradient-text"></i> <span class="gradient-text">Messages</span></h2><a href="#search" class="btn-glass btn-primary animate-in"><i class="bi bi-plus-lg"></i> New Message</a></div>
+      ${items||'<div class="empty-state animate-in"><i class="bi bi-envelope"></i><h4>No messages yet</h4><p>Start a conversation from item detail pages</p></div>'}${this.footer()}`;
+  },
+
+  pgMsgDetail(){
+    const rid=parseInt(new URLSearchParams(location.hash.split('?')[1]).get('id'));
+    if(!rid){this.go('messages');return}
+    const uid=Auth.user.user_id;const other=DB.q1("SELECT fullname FROM users WHERE user_id=?",[rid]);
+    const msgs=DB.q("SELECT m.*, u.fullname FROM messages m JOIN users u ON m.sender_id=u.user_id WHERE (m.sender_id=? AND m.receiver_id=?) OR (m.sender_id=? AND m.receiver_id=?) ORDER BY m.created_at ASC",[uid,rid,rid,uid]);
+    DB.run("UPDATE messages SET is_read=1 WHERE sender_id=? AND receiver_id=? AND is_read=0",[rid,uid]);
+    let bubbles='';msgs.forEach(m=>{const isSent=m.sender_id===uid;bubbles+=`<div class="chat-bubble ${isSent?'chat-sent':'chat-received'} animate-in">${this.h(m.message)}<div class="text-xs ${isSent?'':'text-muted'}" style="margin-top:4px;opacity:0.7">${m.created_at}</div></div>`});
+    document.getElementById('main-content').innerHTML=`
+      <div class="d-flex align-center mb-4"><button class="btn-glass" onclick="history.back()"><i class="bi bi-arrow-left"></i></button><h2 class="page-title animate-in" style="margin:0 0 0 12px"><i class="bi bi-chat-dots gradient-text"></i> <span class="gradient-text">${this.h(other?other.fullname:'User')}</span></h2></div>
+      <div class="card-3d animate-in" style="max-width:800px"><div id="msgList" style="min-height:300px;max-height:500px;overflow-y:auto;padding:16px">${bubbles||'<div class="empty-state"><p>Start the conversation</p></div>'}</div>
+      <div class="divider"></div><form id="msgForm" class="d-flex gap-2"><input type="text" class="input-glass flex-1" id="msgInput" placeholder="Type a message..." required><button type="submit" class="btn-glass btn-primary"><i class="bi bi-send"></i></button></form></div>${this.footer()}`;
+    const list=document.getElementById('msgList');list.scrollTop=list.scrollHeight;
+    document.getElementById('msgForm').onsubmit=e=>{e.preventDefault();const txt=document.getElementById('msgInput').value.trim();if(!txt)return;DB.sendMsg(uid,rid,txt);document.getElementById('msgInput').value='';DB.notify(rid,`New message from ${Auth.user.fullname}`,'message','#message_detail?id='+uid);this.pgMsgDetail()};
+  },
+
+  pgHelp(){
+    const faqs=[
+      {q:'How do I report a lost item?',a:'Click "Report Lost" from the navigation, fill in the details including item name, category, description, date lost, and location. You can also upload a photo.'},
+      {q:'How do I report a found item?',a:'Click "Report Found" from the navigation. Fill in the item details and location where you found it. A photo helps the owner identify their item.'},
+      {q:'How do I claim a found item?',a:'Go to Search, find the item, click on it to view details, then click "Claim This Item". You\'ll need to provide a reason and description to prove ownership.'},
+      {q:'What happens after I submit a claim?',a:'The admin will review your claim. You\'ll receive a notification when it\'s approved or rejected. If approved, you can collect the item from the reported location.'},
+      {q:'Can I edit my reports?',a:'Yes, go to "My Lost Items" or "My Found Items" from your dashboard to edit or delete your reports.'},
+      {q:'How do I save items for later?',a:'Click the bookmark icon on any item card to save it. Access saved items from the "Saved" link in the navigation.'},
+      {q:'What are the different user roles?',a:'Students can report and claim items. Staff can manage found items. Security can verify items. Moderators help manage reports. Admins have full access.'},
+      {q:'How do I contact the owner or finder?',a:'Click on an item to view details, then use the messaging feature to contact the reporter directly.'},
+      {q:'What if my item is urgent?',a:'Check the "Urgent" checkbox when reporting. Urgent items are highlighted with a pulsing badge for faster attention.'},
+      {q:'How do I report a problem with the system?',a:'Use the Feedback page or contact IT support at findme@cavendish.ac.ug'}
+    ];
+    let faqHtml='';faqs.forEach((f,i)=>{faqHtml+=`<div class="card-3d mb-2 animate-in" style="${this.animDelay(i)};padding:20px;cursor:pointer" onclick="this.querySelector('.faq-ans').style.display=this.querySelector('.faq-ans').style.display==='block'?'none':'block'"><div class="d-flex justify-between align-center"><h4 class="fw-bold" style="font-size:0.95rem">${this.h(f.q)}</h4><i class="bi bi-chevron-down text-muted"></i></div><div class="faq-ans" style="display:none;margin-top:12px"><p class="text-sm text-muted">${this.h(f.a)}</p></div></div>`});
+    document.getElementById('main-content').innerHTML=`
+      <h2 class="page-title animate-in"><i class="bi bi-question-circle gradient-text"></i> <span class="gradient-text">Help Center</span></h2>
+      <div class="row row-2 mb-5">
+        <div>
+          <h3 class="fw-bold mb-3 animate-in"><i class="bi bi-faq" style="color:var(--primary-light)"></i> Frequently Asked Questions</h3>
+          ${faqHtml}
+        </div>
+        <div>
+          <div class="card-3d mb-4 animate-in"><h3 class="fw-bold mb-3"><i class="bi bi-envelope" style="color:var(--accent)"></i> Contact Support</h3>
+            <div class="mb-3"><label>Email</label><div class="input-glass" style="pointer-events:none;padding:12px 16px">findme@cavendish.ac.ug</div></div>
+            <div class="mb-3"><label>Phone</label><div class="input-glass" style="pointer-events:none;padding:12px 16px">+256 700 123 456</div></div>
+            <div class="mb-3"><label>Office</label><div class="input-glass" style="pointer-events:none;padding:12px 16px">Student Affairs Office, Main Campus</div></div>
+            <div class="mb-3"><label>Hours</label><div class="input-glass" style="pointer-events:none;padding:12px 16px">Mon - Fri, 8:00 AM - 5:00 PM</div></div>
+          </div>
+          <div class="card-3d animate-in" style="animation-delay:.1s"><h3 class="fw-bold mb-3"><i class="bi bi-lightbulb" style="color:var(--warning)"></i> Tips</h3>
+            <ul style="list-style:none;padding:0"><li class="mb-2 text-sm"><i class="bi bi-check-circle" style="color:var(--success)"></i> Always upload a clear photo of your item</li><li class="mb-2 text-sm"><i class="bi bi-check-circle" style="color:var(--success)"></i> Be specific about the location</li><li class="mb-2 text-sm"><i class="bi bi-check-circle" style="color:var(--success)"></i> Check for updates in notifications</li><li class="text-sm"><i class="bi bi-check-circle" style="color:var(--success)"></i> Report urgent items with the urgent flag</li></ul>
+          </div>
+        </div>
+      </div>${this.footer()}`;
+  },
+
+  pgUserSettings(){
+    const u=DB.q1("SELECT * FROM users WHERE user_id=?",Auth.user.user_id);
+    document.getElementById('main-content').innerHTML=`
+      <h2 class="page-title animate-in"><i class="bi bi-gear gradient-text"></i> <span class="gradient-text">Account Settings</span></h2>
+      <div class="row row-2">
+        <div class="card-3d animate-in"><h3 class="fw-bold mb-4"><i class="bi bi-person" style="color:var(--primary-light)"></i> Profile Information</h3>
+          <form id="profForm">
+            <div class="form-group"><label>Full Name</label><input type="text" class="input-glass" id="sName" value="${this.h(u.fullname)}"></div>
+            <div class="form-group"><label>Email</label><div class="input-glass" style="pointer-events:none;padding:12px 16px;opacity:0.6">${this.h(u.email)}</div></div>
+            <div class="form-group"><label>Phone</label><input type="text" class="input-glass" id="sPhone" value="${this.h(u.phone||'')}"></div>
+            <div class="form-group"><label>Bio</label><textarea class="input-glass" id="sBio" rows="3" placeholder="Tell us about yourself...">${this.h(u.bio||'')}</textarea></div>
+            <button type="submit" class="btn-glass btn-primary w-100"><i class="bi bi-save"></i> Save Profile</button>
+          </form>
+        </div>
+        <div>
+          <div class="card-3d mb-4 animate-in" style="animation-delay:.1s"><h3 class="fw-bold mb-4"><i class="bi bi-lock" style="color:var(--danger)"></i> Change Password</h3>
+            <form id="pwdForm">
+              <div class="form-group"><label>Current Password</label><input type="password" class="input-glass" id="sOldPwd" required></div>
+              <div class="form-group"><label>New Password</label><input type="password" class="input-glass" id="sNewPwd" required minlength="6"></div>
+              <div class="form-group"><label>Confirm New Password</label><input type="password" class="input-glass" id="sCfPwd" required></div>
+              <button type="submit" class="btn-glass btn-danger w-100"><i class="bi bi-shield-lock"></i> Update Password</button>
+            </form>
+          </div>
+          <div class="card-3d animate-in" style="animation-delay:.2s"><h3 class="fw-bold mb-4"><i class="bi bi-award" style="color:var(--warning)"></i> My Badges & Points</h3>
+            <div class="d-flex align-center gap-3 mb-3"><div class="score-ring" style="border-color:var(--primary);color:var(--primary)">${Auth.user.points||0}</div><div><div class="fw-bold">Reputation Points</div><div class="text-sm text-muted">Earn points by reporting items and helping others</div></div></div>
+            <div class="d-flex gap-2 flex-wrap">${(Auth.user.badges?Auth.user.badges.split(','):[].map(b=>`<span class="badge-3d badge-found"><i class="bi bi-award"></i> ${this.h(b)}</span>`)).join('')||'<span class="text-sm text-muted">No badges yet</span>'}</div>
+          </div>
+        </div>
+      </div>${this.footer()}`;
+    document.getElementById('profForm').onsubmit=e=>{e.preventDefault();DB.run("UPDATE users SET fullname=?,phone=?,bio=? WHERE user_id=?",[document.getElementById('sName').value.trim(),document.getElementById('sPhone').value.trim(),document.getElementById('sBio').value.trim(),Auth.user.user_id]);Auth.user.fullname=document.getElementById('sName').value.trim();sessionStorage.setItem('lfuser',JSON.stringify(Auth.user));this.toast('Profile updated!');this.nav()};
+    document.getElementById('pwdForm').onsubmit=e=>{e.preventDefault();const old=document.getElementById('sOldPwd').value;const np=document.getElementById('sNewPwd').value;const cf=document.getElementById('sCfPwd').value;if(!DB.verifyP(old,u.password)){this.toast('Current password is incorrect.','danger');return}if(np.length<6){this.toast('Password must be at least 6 characters.','danger');return}if(np!==cf){this.toast('Passwords do not match.','danger');return}DB.run("UPDATE users SET password=? WHERE user_id=?",[DB.hashP(np),Auth.user.user_id]);this.toast('Password updated!');document.getElementById('pwdForm').reset()};
+  },
+
+  pgFeedback(){
+    document.getElementById('main-content').innerHTML=`
+      <h2 class="page-title animate-in"><i class="bi bi-star gradient-text"></i> <span class="gradient-text">Feedback</span></h2>
+      <div class="card-3d animate-in" style="max-width:600px"><h3 class="fw-bold mb-4"><i class="bi bi-chat-heart" style="color:var(--accent)"></i> Share Your Experience</h3>
+        <form id="fbForm">
+          <div class="form-group"><label>Rating *</label><div class="d-flex gap-2" id="starRating">
+            ${[1,2,3,4,5].map(n=>`<i class="bi bi-star" style="font-size:2rem;cursor:pointer;color:var(--text-muted)" data-val="${n}" onclick="App.setRating(${n})"></i>`).join('')}
+          </div><input type="hidden" id="fbRating" value="0"></div>
+          <div class="form-group"><label>Your Feedback *</label><textarea class="input-glass" id="fbComment" rows="5" placeholder="Tell us what you think about FindMe..." required></textarea></div>
+          <button type="submit" class="btn-glass btn-primary w-100 btn-lg"><i class="bi bi-send"></i> Submit Feedback</button>
+        </form>
+      </div>${this.footer()}`;
+    document.getElementById('fbForm').onsubmit=e=>{e.preventDefault();const rating=parseInt(document.getElementById('fbRating').value);if(rating===0){this.toast('Please select a rating.','warning');return}DB.run("INSERT INTO feedback(user_id,rating,comment,page) VALUES(?,?,?,?)",[Auth.user.user_id,rating,document.getElementById('fbComment').value.trim(),this.page]);Auth.addPoints(5);this.toast('Thank you for your feedback! +5 points');this.go('dashboard')};
+  },
+  setRating(n){document.getElementById('fbRating').value=n;document.querySelectorAll('#starRating i').forEach(el=>{el.className=parseInt(el.dataset.val)<=n?'bi bi-star-fill':'bi bi-star';el.style.color=parseInt(el.dataset.val)<=n?'var(--warning)':'var(--text-muted)'})},
+
+  pgStaffDash(){
+    const fc=DB.q1("SELECT COUNT(*) as c FROM found_items").c;
+    const fp=DB.q1("SELECT COUNT(*) as c FROM found_items WHERE status='pending'").c;
+    const fr=DB.q1("SELECT COUNT(*) as c FROM found_items WHERE status='returned'").c;
+    const uv=DB.q1("SELECT COUNT(*) as c FROM found_items WHERE is_verified=0").c;
+    const recent=DB.q("SELECT f.*, c.category_name, u.fullname FROM found_items f JOIN categories c ON f.category_id=c.category_id JOIN users u ON f.user_id=u.user_id ORDER BY f.created_at DESC LIMIT 8");
+    let rows='';recent.forEach(i=>{rows+=`<tr><td><img src="${this.imgS(i.image)||'https://placehold.co/48x48/1e293b/94a3b8?text=N/A'}" class="img-thumb"></td><td>${this.h(i.item_name)}</td><td>${this.h(i.category_name)}</td><td>${this.h(i.location)}</td><td>${this.badge(i.status)}</td><td>${i.is_verified?'<i class="bi bi-check-circle" style="color:var(--success)"></i>':'<i class="bi bi-hourglass" style="color:var(--warning)"></i>'}</td></tr>`});
+    document.getElementById('main-content').innerHTML=`
+      <h2 class="page-title animate-in"><i class="bi bi-briefcase gradient-text"></i> <span class="gradient-text">Staff Dashboard</span></h2>
+      <div class="alert alert-info animate-in"><i class="bi bi-info-circle"></i> Staff members can manage found items and help verify ownership.</div>
+      <div class="row row-4 mb-5">
+        <div class="stat-card animate-in"><div class="stat-icon" style="background:rgba(16,185,129,0.15);color:var(--success)"><i class="bi bi-hand-index-thumb"></i></div><h2 style="color:var(--success)">${fc}</h2><p>Total Found</p></div>
+        <div class="stat-card animate-in" style="animation-delay:.1s"><div class="stat-icon" style="background:rgba(245,158,11,0.15);color:var(--warning)"><i class="bi bi-hourglass"></i></div><h2 style="color:var(--warning)">${fp}</h2><p>Pending</p></div>
+        <div class="stat-card animate-in" style="animation-delay:.2s"><div class="stat-icon" style="background:rgba(16,185,129,0.15);color:var(--success)"><i class="bi bi-arrow-return-left"></i></div><h2 style="color:var(--success)">${fr}</h2><p>Returned</p></div>
+        <div class="stat-card animate-in" style="animation-delay:.3s"><div class="stat-icon" style="background:rgba(6,182,212,0.15);color:var(--info)"><i class="bi bi-patch-question"></i></div><h2 style="color:var(--info)">${uv}</h2><p>Unverified</p></div>
+      </div>
+      <div class="card-3d animate-in" style="animation-delay:.4s"><h3 class="fw-bold mb-4"><i class="bi bi-clock-history" style="color:var(--primary-light)"></i> Recent Found Items</h3><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>Image</th><th>Item</th><th>Category</th><th>Location</th><th>Status</th><th>Verified</th></tr></thead><tbody>${rows||'<tr><td colspan="6" class="text-center text-muted">No items</td></tr>'}</tbody></table></div></div>${this.footer()}`;
+  },
+
+  pgStaffFound(){
+    const items=DB.q("SELECT f.*, c.category_name, u.fullname FROM found_items f JOIN categories c ON f.category_id=c.category_id JOIN users u ON f.user_id=u.user_id ORDER BY f.created_at DESC");
+    let rows='';items.forEach(i=>{rows+=`<tr><td>${i.found_id}</td><td><img src="${this.imgS(i.image)||'https://placehold.co/48x48/1e293b/94a3b8?text=N/A'}" class="img-thumb"></td><td>${this.h(i.item_name)}</td><td>${this.h(i.category_name)}</td><td>${this.h(i.fullname)}</td><td>${this.h(i.location)}</td><td>${this.badge(i.status)}</td><td><div class="d-flex gap-2">${i.status!=='returned'?`<button class="btn-glass btn-sm btn-success" onclick="App.staffReturn(${i.found_id})"><i class="bi bi-check-lg"></i> Return</button>`:''}<a href="#item_detail?type=found&id=${i.found_id}" class="btn-glass btn-sm btn-info"><i class="bi bi-eye"></i></a></div></td></tr>`});
+    document.getElementById('main-content').innerHTML=`
+      <div class="d-flex justify-between align-center mb-4"><h2 class="page-title animate-in" style="margin:0"><i class="bi bi-hand-index-thumb" style="color:var(--success)"></i> <span class="gradient-text">Manage Found Items</span></h2><a href="#report_found" class="btn-glass btn-success animate-in"><i class="bi bi-plus-lg"></i> Report Found</a></div>
+      <div class="card-3d animate-in" style="animation-delay:.1s"><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>#</th><th>Image</th><th>Item</th><th>Category</th><th>Reported By</th><th>Location</th><th>Status</th><th>Actions</th></tr></thead><tbody>${rows||'<tr><td colspan="8" class="text-center text-muted">No found items</td></tr>'}</tbody></table></div></div>${this.footer()}`;
+  },
+  staffReturn(id){if(!confirm('Confirm item has been returned to owner?'))return;DB.run("UPDATE found_items SET status='returned' WHERE found_id=?",[id]);this.toast('Item marked as returned!');Auth.addPoints(10);this.pgStaffFound()},
+
+  pgSecurityDash(){
+    const total=DB.q1("SELECT COUNT(*) as c FROM lost_items").c+DB.q1("SELECT COUNT(*) as c FROM found_items").c;
+    const verified=DB.q1("SELECT COUNT(*) as c FROM found_items WHERE is_verified=1").c;
+    const unverified=DB.q1("SELECT COUNT(*) as c FROM found_items WHERE is_verified=0").c;
+    const claims=DB.q1("SELECT COUNT(*) as c FROM claims WHERE status='pending'").c;
+    const recent=DB.q("SELECT 'lost' as type, item_name, location, created_at FROM lost_items UNION ALL SELECT 'found' as type, item_name, location, created_at FROM found_items ORDER BY created_at DESC LIMIT 10");
+    let rows='';recent.forEach(r=>{rows+=`<tr><td><span class="badge-3d ${r.type==='lost'?'badge-lost':'badge-found'}">${r.type}</span></td><td>${this.h(r.item_name)}</td><td>${this.h(r.location)}</td><td class="text-sm text-muted">${r.created_at}</td></tr>`});
+    document.getElementById('main-content').innerHTML=`
+      <h2 class="page-title animate-in"><i class="bi bi-shield-check gradient-text"></i> <span class="gradient-text">Security Dashboard</span></h2>
+      <div class="alert alert-warning animate-in"><i class="bi bi-exclamation-triangle"></i> Security personnel can verify found items and review claims.</div>
+      <div class="row row-4 mb-5">
+        <div class="stat-card animate-in"><div class="stat-icon" style="background:rgba(99,102,241,0.15);color:var(--primary-light)"><i class="bi bi-box"></i></div><h2 style="color:var(--primary-light)">${total}</h2><p>Total Items</p></div>
+        <div class="stat-card animate-in" style="animation-delay:.1s"><div class="stat-icon" style="background:rgba(16,185,129,0.15);color:var(--success)"><i class="bi bi-check-circle"></i></div><h2 style="color:var(--success)">${verified}</h2><p>Verified</p></div>
+        <div class="stat-card animate-in" style="animation-delay:.2s"><div class="stat-icon" style="background:rgba(245,158,11,0.15);color:var(--warning)"><i class="bi bi-patch-question"></i></div><h2 style="color:var(--warning)">${unverified}</h2><p>Unverified</p></div>
+        <div class="stat-card animate-in" style="animation-delay:.3s"><div class="stat-icon" style="background:rgba(236,72,153,0.15);color:var(--accent2)"><i class="bi bi-clipboard-check"></i></div><h2 style="color:var(--accent2)">${claims}</h2><p>Pending Claims</p></div>
+      </div>
+      <div class="card-3d animate-in" style="animation-delay:.4s"><h3 class="fw-bold mb-4"><i class="bi bi-clock-history" style="color:var(--primary-light)"></i> Recent Reports</h3><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>Type</th><th>Item</th><th>Location</th><th>Date</th></tr></thead><tbody>${rows||'<tr><td colspan="4" class="text-center text-muted">No reports</td></tr>'}</tbody></table></div></div>${this.footer()}`;
+  },
+
+  pgSecurityVerify(){
+    const items=DB.q("SELECT f.*, c.category_name, u.fullname FROM found_items f JOIN categories c ON f.category_id=c.category_id JOIN users u ON f.user_id=u.user_id WHERE f.is_verified=0 ORDER BY f.created_at DESC");
+    let rows='';items.forEach(i=>{rows+=`<tr><td>${i.found_id}</td><td><img src="${this.imgS(i.image)||'https://placehold.co/48x48/1e293b/94a3b8?text=N/A'}" class="img-thumb"></td><td>${this.h(i.item_name)}</td><td>${this.h(i.category_name)}</td><td>${this.h(i.fullname)}</td><td>${this.h(i.location)}</td><td>${i.created_at}</td><td><div class="d-flex gap-2"><button class="btn-glass btn-sm btn-success" onclick="App.verifyItem(${i.found_id})"><i class="bi bi-check-lg"></i> Verify</button><a href="#item_detail?type=found&id=${i.found_id}" class="btn-glass btn-sm btn-info"><i class="bi bi-eye"></i></a></div></td></tr>`});
+    document.getElementById('main-content').innerHTML=`
+      <h2 class="page-title animate-in"><i class="bi bi-patch-check gradient-text"></i> <span class="gradient-text">Verify Found Items</span></h2>
+      <div class="alert alert-info animate-in"><i class="bi bi-info-circle"></i> Review and verify found items before they become claimable.</div>
+      <div class="card-3d animate-in" style="animation-delay:.1s"><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>#</th><th>Image</th><th>Item</th><th>Category</th><th>Reported By</th><th>Location</th><th>Date</th><th>Actions</th></tr></thead><tbody>${rows||'<tr><td colspan="8" class="text-center text-muted">All items verified! Great work.</td></tr>'}</tbody></table></div></div>${this.footer()}`;
+  },
+  verifyItem(id){if(!confirm('Verify this found item?'))return;DB.run("UPDATE found_items SET is_verified=1 WHERE found_id=?",[id]);DB.notify(DB.q1("SELECT user_id FROM found_items WHERE found_id=?",id)?.user_id,`Your found item #${id} has been verified by security.`,'success');this.toast('Item verified!');Auth.addPoints(5);this.pgSecurityVerify()},
+
+  pgAdminAnnouncements(){
+    const anns=DB.q("SELECT a.*, u.fullname FROM announcements a JOIN users u ON a.author_id=u.user_id ORDER BY a.created_at DESC");
+    let rows='';anns.forEach(a=>{rows+=`<tr><td>${a.announcement_id}</td><td><div class="fw-bold text-sm">${this.h(a.title)}</div><div class="text-xs text-muted">${this.h(a.body).substring(0,60)}...</div></td><td>${this.h(a.fullname)}</td><td><span class="badge-3d ${a.priority==='high'?'badge-lost':a.priority==='urgent'?'badge-urgent':'badge-pending'}">${a.priority}</span></td><td><span class="badge-3d badge-user">${a.target_role}</span></td><td>${a.is_active?'<i class="bi bi-check-circle" style="color:var(--success)"></i>':'<i class="bi bi-x-circle" style="color:var(--danger)"></i>'}</td><td><div class="d-flex gap-2"><button class="btn-glass btn-sm btn-danger" onclick="App.delAnn(${a.announcement_id})"><i class="bi bi-trash"></i></button></div></td></tr>`});
+    document.getElementById('main-content').innerHTML=`
+      <h2 class="page-title animate-in"><i class="bi bi-megaphone gradient-text"></i> <span class="gradient-text">Announcements</span></h2>
+      <div class="row row-2">
+        <div class="card-3d animate-in"><h3 class="fw-bold mb-4"><i class="bi bi-plus-circle" style="color:var(--primary-light)"></i> New Announcement</h3>
+          <form id="annForm">
+            <div class="form-group"><label>Title *</label><input type="text" class="input-glass" id="annTitle" required placeholder="Announcement title"></div>
+            <div class="form-group"><label>Body *</label><textarea class="input-glass" id="annBody" rows="5" required placeholder="Write your announcement..."></textarea></div>
+            <div class="row row-2"><div class="form-group"><label>Priority</label><select class="input-glass" id="annPri"><option value="normal">Normal</option><option value="high">High</option><option value="urgent">Urgent</option></select></div>
+            <div class="form-group"><label>Target Role</label><select class="input-glass" id="annRole"><option value="all">All Users</option><option value="student">Students</option><option value="staff">Staff</option><option value="security">Security</option></select></div></div>
+            <button type="submit" class="btn-glass btn-primary w-100"><i class="bi bi-send"></i> Publish Announcement</button>
+          </form>
+        </div>
+        <div class="card-3d animate-in" style="animation-delay:.1s"><h3 class="fw-bold mb-4"><i class="bi bi-list-ul" style="color:var(--accent)"></i> All Announcements</h3><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>#</th><th>Title</th><th>Author</th><th>Priority</th><th>Target</th><th>Active</th><th>Action</th></tr></thead><tbody>${rows||'<tr><td colspan="7" class="text-center text-muted">No announcements</td></tr>'}</tbody></table></div></div>
+      </div>${this.footer()}`;
+    document.getElementById('annForm').onsubmit=e=>{e.preventDefault();DB.run("INSERT INTO announcements(author_id,title,body,priority,target_role) VALUES(?,?,?,?,?)",[Auth.user.user_id,document.getElementById('annTitle').value.trim(),document.getElementById('annBody').value.trim(),document.getElementById('annPri').value,document.getElementById('annRole').value]);DB.log(Auth.user.user_id,'create_announcement','announcement',DB.lastId(),document.getElementById('annTitle').value.trim());this.toast('Announcement published!');this.go('admin_announcements')};
+  },
+  delAnn(id){if(!confirm('Delete announcement?'))return;DB.run("DELETE FROM announcements WHERE announcement_id=?",id);this.toast('Deleted.');this.pgAdminAnnouncements()},
+
+  pgAdminAudit(){
+    const logs=DB.q("SELECT al.*, u.fullname FROM audit_log al LEFT JOIN users u ON al.user_id=u.user_id ORDER BY al.created_at DESC LIMIT 100");
+    const params=new URLSearchParams(location.hash.split('?')[1]);const filterAction=params.get('action')||'';
+    let filtered=filterAction?logs.filter(l=>l.action===filterAction):logs;
+    let rows='';filtered.forEach(l=>{const actionColors={login:'var(--success)',logout:'var(--text-muted)',register:'var(--primary)',delete:'var(--danger)',update:'var(--warning)',report_lost:'var(--warning)',report_found:'var(--success)',claim:'var(--accent)',verify:'var(--info)',ban:'var(--danger)'};rows+=`<tr><td>${l.log_id}</td><td>${this.h(l.fullname||'System')}</td><td><span class="badge-3d" style="background:rgba(255,255,255,0.08);color:${actionColors[l.action]||'var(--text-muted)'}">${this.h(l.action)}</span></td><td>${this.h(l.target_type||'-')}</td><td>${l.target_id||'-'}</td><td class="text-sm">${this.h(l.details||'')}</td><td class="text-xs text-muted">${l.created_at}</td></tr>`});
+    const actions=[...new Set(logs.map(l=>l.action))];
+    let af=`<a href="#admin_audit" class="btn-glass btn-sm ${!filterAction?'btn-primary':''}">All</a>`;actions.forEach(a=>{af+=`<a href="#admin_audit?action=${a}" class="btn-glass btn-sm ${filterAction===a?'btn-primary':''}">${a}</a>`});
+    document.getElementById('main-content').innerHTML=`
+      <div class="d-flex justify-between align-center mb-4"><h2 class="page-title animate-in" style="margin:0"><i class="bi bi-journal-text gradient-text"></i> <span class="gradient-text">Audit Log</span></h2><span class="text-sm text-muted">${filtered.length} entries</span></div>
+      <div class="d-flex gap-2 mb-4 flex-wrap animate-in">${af}</div>
+      <div class="card-3d animate-in" style="animation-delay:.1s"><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>#</th><th>User</th><th>Action</th><th>Target</th><th>Target ID</th><th>Details</th><th>Date</th></tr></thead><tbody>${rows||'<tr><td colspan="7" class="text-center text-muted">No audit entries</td></tr>'}</tbody></table></div></div>${this.footer()}`;
+  },
+
+  pgAdminMatching(){
+    const losts=DB.q("SELECT l.*, c.category_name, u.fullname FROM lost_items l JOIN categories c ON l.category_id=c.category_id JOIN users u ON l.user_id=u.user_id WHERE l.status='pending' ORDER BY l.created_at DESC");
+    const founds=DB.q("SELECT f.*, c.category_name, u.fullname FROM found_items f JOIN categories c ON f.category_id=c.category_id JOIN users u ON f.user_id=u.user_id WHERE f.status='pending' ORDER BY f.created_at DESC");
+    let matches=[];
+    losts.forEach(l=>{founds.forEach(f=>{
+      let score=0;
+      if(l.item_name&&f.item_name&&l.item_name.toLowerCase()===f.item_name.toLowerCase())score+=40;
+      else if(l.item_name&&f.item_name&&(l.item_name.toLowerCase().includes(f.item_name.toLowerCase())||f.item_name.toLowerCase().includes(l.item_name.toLowerCase())))score+=25;
+      if(l.category_id===f.category_id)score+=20;
+      if(l.location&&f.location&&l.location.toLowerCase()===f.location.toLowerCase())score+=20;
+      if(l.description&&f.description){const w1=l.description.toLowerCase().split(' '),w2=f.description.toLowerCase().split(' ');const common=w1.filter(w=>w2.includes(w)&&w.length>3);score+=Math.min(common.length*5,20)}
+      if(score>=30)matches.push({lost:l,found:f,score})
+    })});
+    matches.sort((a,b)=>b.score-a.score);
+    let mHtml='';matches.slice(0,20).forEach((m,i)=>{mHtml+=`<div class="card-3d mb-2 animate-in" style="${this.animDelay(i)};padding:16px"><div class="d-flex justify-between align-center"><div class="d-flex gap-3 align-center"><span class="badge-3d badge-lost">Lost: ${this.h(m.lost.item_name)}</span><i class="bi bi-link-45deg" style="font-size:1.2rem;color:var(--accent)"></i><span class="badge-3d badge-found">Found: ${this.h(m.found.item_name)}</span></div><div class="d-flex align-center gap-2"><div class="progress-bar" style="width:100px"><div class="fill" style="width:${m.score}%;background:${m.score>=70?'var(--success)':m.score>=50?'var(--warning)':'var(--danger)'}"></div></div><span class="text-sm fw-bold" style="color:${m.score>=70?'var(--success)':m.score>=50?'var(--warning)':'var(--danger)'}">${m.score}%</span></div></div>
+      <div class="d-flex justify-between align-center mt-2"><div class="text-xs text-muted">Lost by ${this.h(m.lost.fullname)} | Found by ${this.h(m.found.fullname)} | ${m.found.location||''}</div><div class="d-flex gap-2"><a href="#item_detail?type=lost&id=${m.lost.lost_id}" class="btn-glass btn-sm">View Lost</a><a href="#item_detail?type=found&id=${m.found.found_id}" class="btn-glass btn-sm">View Found</a></div></div></div>`});
+    document.getElementById('main-content').innerHTML=`
+      <h2 class="page-title animate-in"><i class="bi bi-link-45deg gradient-text"></i> <span class="gradient-text">Item Matching</span></h2>
+      <div class="alert alert-info animate-in"><i class="bi bi-info-circle"></i> Auto-matches lost and found items based on name, category, location, and description similarity.</div>
+      <div class="row row-3 mb-4">
+        <div class="stat-card animate-in"><div class="stat-icon" style="background:rgba(245,158,11,0.15);color:var(--warning)"><i class="bi bi-flag"></i></div><h2 style="color:var(--warning)">${losts.length}</h2><p>Pending Lost</p></div>
+        <div class="stat-card animate-in" style="animation-delay:.1s"><div class="stat-icon" style="background:rgba(16,185,129,0.15);color:var(--success)"><i class="bi bi-hand-index-thumb"></i></div><h2 style="color:var(--success)">${founds.length}</h2><p>Pending Found</p></div>
+        <div class="stat-card animate-in" style="animation-delay:.2s"><div class="stat-icon" style="background:rgba(139,92,246,0.15);color:var(--accent)"><i class="bi bi-link-45deg"></i></div><h2 style="color:var(--accent)">${matches.length}</h2><p>Possible Matches</p></div>
+      </div>
+      <h3 class="fw-bold mb-3 animate-in" style="animation-delay:.3s"><i class="bi bi-stars" style="color:var(--warning)"></i> Suggested Matches</h3>
+      ${mHtml||'<div class="empty-state animate-in" style="animation-delay:.3s"><i class="bi bi-search"></i><h4>No matches found</h4><p>More items needed for matching</p></div>'}${this.footer()}`;
+  },
+
+  pgAdminAnalytics(){
+    const totalL=DB.q1("SELECT COUNT(*) as c FROM lost_items").c;
+    const totalF=DB.q1("SELECT COUNT(*) as c FROM found_items").c;
+    const returned=DB.q1("SELECT COUNT(*) as c FROM found_items WHERE status='returned'").c;
+    const totalU=DB.q1("SELECT COUNT(*) as c FROM users").c;
+    const rate=totalL>0?Math.round((returned/totalL)*100):0;
+    const byCat=DB.q("SELECT c.category_name, COUNT(l.lost_id) as lost_count, COUNT(f.found_id) as found_count FROM categories c LEFT JOIN lost_items l ON c.category_id=l.category_id LEFT JOIN found_items f ON c.category_id=f.category_id GROUP BY c.category_id ORDER BY lost_count DESC");
+    const byFaculty=DB.q("SELECT u.faculty, COUNT(l.lost_id) as lost_count FROM lost_items l JOIN users u ON l.user_id=u.user_id WHERE u.faculty IS NOT NULL GROUP BY u.faculty ORDER BY lost_count DESC");
+    const byLocation=DB.q("SELECT location, COUNT(*) as cnt FROM lost_items WHERE location IS NOT NULL GROUP BY location ORDER BY cnt DESC LIMIT 10");
+    let catBars='';const maxCat=Math.max(...byCat.map(c=>c.lost_count+c.found_count),1);
+    byCat.forEach(c=>{const total=c.lost_count+c.found_count;const pct=Math.round((total/maxCat)*100);catBars+=`<div class="mb-3"><div class="d-flex justify-between mb-1"><span class="text-sm fw-bold">${this.h(c.category_name)}</span><span class="text-xs text-muted">Lost: ${c.lost_count} | Found: ${c.found_count}</span></div><div class="progress-bar"><div class="fill" style="width:${pct}%;background:linear-gradient(90deg,var(--warning),var(--success))"></div></div></div>`});
+    let facBars='';const maxFac=Math.max(...byFaculty.map(f=>f.lost_count),1);
+    byFaculty.forEach(f=>{const pct=Math.round((f.lost_count/maxFac)*100);facBars+=`<div class="mb-3"><div class="d-flex justify-between mb-1"><span class="text-sm fw-bold">${this.h(f.faculty)}</span><span class="text-xs text-muted">${f.lost_count}</span></div><div class="progress-bar"><div class="fill" style="width:${pct}%;background:linear-gradient(90deg,var(--accent),var(--accent2))"></div></div></div>`});
+    let locRows='';byLocation.forEach((l,i)=>{locRows+=`<tr><td>${i+1}</td><td>${this.h(l.location)}</td><td>${l.cnt}</td><td><div class="progress-bar" style="width:120px"><div class="fill" style="width:${Math.round((l.cnt/maxCat)*100)}%;background:var(--primary)"></div></div></td></tr>`});
+    document.getElementById('main-content').innerHTML=`
+      <h2 class="page-title animate-in"><i class="bi bi-graph-up gradient-text"></i> <span class="gradient-text">Analytics</span></h2>
+      <div class="row row-4 mb-5">
+        <div class="stat-card animate-in"><div class="stat-icon" style="background:rgba(245,158,11,0.15);color:var(--warning)"><i class="bi bi-flag"></i></div><h2 style="color:var(--warning)">${totalL}</h2><p>Total Lost</p></div>
+        <div class="stat-card animate-in" style="animation-delay:.1s"><div class="stat-icon" style="background:rgba(16,185,129,0.15);color:var(--success)"><i class="bi bi-hand-index-thumb"></i></div><h2 style="color:var(--success)">${totalF}</h2><p>Total Found</p></div>
+        <div class="stat-card animate-in" style="animation-delay:.2s"><div class="stat-icon" style="background:rgba(99,102,241,0.15);color:var(--primary-light)"><i class="bi bi-arrow-return-left"></i></div><h2 style="color:var(--primary-light)">${returned}</h2><p>Returned</p></div>
+        <div class="stat-card animate-in" style="animation-delay:.3s"><div class="stat-icon" style="background:rgba(139,92,246,0.15);color:var(--accent)"><i class="bi bi-percent"></i></div><h2 style="color:var(--accent)">${rate}%</h2><p>Recovery Rate</p></div>
+      </div>
+      <div class="row row-2 mb-5">
+        <div class="card-3d animate-in" style="animation-delay:.4s"><h3 class="fw-bold mb-4"><i class="bi bi-tags" style="color:var(--primary-light)"></i> By Category</h3>${catBars||'<p class="text-muted">No data</p>'}</div>
+        <div class="card-3d animate-in" style="animation-delay:.5s"><h3 class="fw-bold mb-4"><i class="bi bi-building" style="color:var(--accent)"></i> By Faculty</h3>${facBars||'<p class="text-muted">No data</p>'}</div>
+      </div>
+      <div class="card-3d animate-in" style="animation-delay:.6s"><h3 class="fw-bold mb-4"><i class="bi bi-geo-alt" style="color:var(--accent2)"></i> Top Locations</h3><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>#</th><th>Location</th><th>Reports</th><th></th></tr></thead><tbody>${locRows||'<tr><td colspan="4" class="text-center text-muted">No data</td></tr>'}</tbody></table></div></div>${this.footer()}`;
+  },
+
+  pgAdminBackup(){
+    const counts={users:DB.q1("SELECT COUNT(*) as c FROM users").c,lost_items:DB.q1("SELECT COUNT(*) as c FROM lost_items").c,found_items:DB.q1("SELECT COUNT(*) as c FROM found_items").c,claims:DB.q1("SELECT COUNT(*) as c FROM claims").c,notifications:DB.q1("SELECT COUNT(*) as c FROM notifications").c,announcements:DB.q1("SELECT COUNT(*) as c FROM announcements").c,audit_log:DB.q1("SELECT COUNT(*) as c FROM audit_log").c,feedback:DB.q1("SELECT COUNT(*) as c FROM feedback").c};
+    let tableRows='';Object.entries(counts).forEach(([k,v])=>{tableRows+=`<tr><td class="fw-bold">${k.replace(/_/g,' ')}</td><td>${v}</td></tr>`});
+    document.getElementById('main-content').innerHTML=`
+      <h2 class="page-title animate-in"><i class="bi bi-download gradient-text"></i> <span class="gradient-text">Export Data</span></h2>
+      <div class="row row-2">
+        <div class="card-3d animate-in"><h3 class="fw-bold mb-4"><i class="bi bi-database" style="color:var(--primary-light)"></i> Database Summary</h3><div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>Table</th><th>Records</th></tr></thead><tbody>${tableRows}</tbody></table></div></div>
+        <div class="card-3d animate-in" style="animation-delay:.1s"><h3 class="fw-bold mb-4"><i class="bi bi-download" style="color:var(--accent)"></i> Export Options</h3>
+          <div class="d-flex flex-col gap-3">
+            <button class="btn-glass btn-primary btn-lg" onclick="App.exportCSV('users')"><i class="bi bi-filetype-csv"></i> Export Users (CSV)</button>
+            <button class="btn-glass btn-success btn-lg" onclick="App.exportCSV('lost_items')"><i class="bi bi-filetype-csv"></i> Export Lost Items (CSV)</button>
+            <button class="btn-glass btn-warning btn-lg" onclick="App.exportCSV('found_items')"><i class="bi bi-filetype-csv"></i> Export Found Items (CSV)</button>
+            <button class="btn-glass btn-info btn-lg" onclick="App.exportCSV('claims')"><i class="bi bi-filetype-csv"></i> Export Claims (CSV)</button>
+            <button class="btn-glass btn-lg" onclick="App.exportJSON()"><i class="bi bi-filetype-json"></i> Export All (JSON)</button>
+            <button class="btn-glass btn-danger btn-lg" onclick="App.exportAudit()"><i class="bi bi-journal-text"></i> Export Audit Log (CSV)</button>
+          </div>
+        </div>
+      </div>${this.footer()}`;
+  },
+  exportCSV(table){
+    const data=DB.q(`SELECT * FROM ${table}`);if(!data.length){this.toast('No data to export.','warning');return}
+    const headers=Object.keys(data[0]);let csv=headers.join(',')+'\n';data.forEach(r=>{csv+=headers.map(h=>`"${String(r[h]||'').replace(/"/g,'""')}"`).join(',')+'\n'});
+    const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`findme_${table}_${new Date().toISOString().split('T')[0]}.csv`;a.click();this.toast(`${table} exported!`);DB.log(Auth.user.user_id,'export','data',null,`Exported ${table} as CSV`);
+  },
+  exportJSON(){
+    const tables=['users','lost_items','found_items','claims','categories','notifications','announcements','audit_log','feedback'];
+    const data={};tables.forEach(t=>{data[t]=DB.q(`SELECT * FROM ${t}`)});
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`findme_full_backup_${new Date().toISOString().split('T')[0]}.json`;a.click();this.toast('Full backup exported!');DB.log(Auth.user.user_id,'export','data',null,'Full JSON backup exported');
+  },
+  exportAudit(){this.exportCSV('audit_log')},
+
+  pgAdminSettings(){
+    const settings=DB.q("SELECT * FROM settings ORDER BY setting_key");
+    let rows='';settings.forEach(s=>{rows+=`<tr><td class="fw-bold text-sm">${this.h(s.setting_key)}</td><td><input type="text" class="input-glass" value="${this.h(s.setting_value||'')}" data-key="${this.h(s.setting_key)}" style="padding:8px 12px;font-size:0.85rem" onchange="App.saveSetting(this)"></td></tr>`});
+    document.getElementById('main-content').innerHTML=`
+      <h2 class="page-title animate-in"><i class="bi bi-sliders gradient-text"></i> <span class="gradient-text">System Settings</span></h2>
+      <div class="card-3d animate-in" style="max-width:700px"><h3 class="fw-bold mb-4"><i class="bi bi-gear" style="color:var(--primary-light)"></i> Configuration</h3>
+        <div style="overflow-x:auto"><table class="table-glass"><thead><tr><th>Setting</th><th>Value</th></tr></thead><tbody>${rows}</tbody></table></div>
+        <div class="divider"></div><div class="d-flex gap-3">
+          <button class="btn-glass btn-danger" onclick="if(confirm('Reset ALL data? This cannot be undone!')){localStorage.clear();location.reload()}"><i class="bi bi-trash"></i> Reset All Data</button>
+          <button class="btn-glass btn-warning" onclick="if(confirm('Clear audit log?')){DB.run('DELETE FROM audit_log');App.toast('Audit log cleared.');App.pgAdminSettings()}"><i class="bi bi-journal-x"></i> Clear Audit Log</button>
+        </div>
+      </div>${this.footer()}`;
+  },
+  saveSetting(el){DB.setSetting(el.dataset.key,el.value);this.toast('Setting saved!')},
+
+  pgAdminMassMsg(){
+    document.getElementById('main-content').innerHTML=`
+      <h2 class="page-title animate-in"><i class="bi bi-envelope gradient-text"></i> <span class="gradient-text">Mass Message</span></h2>
+      <div class="card-3d animate-in" style="max-width:700px"><h3 class="fw-bold mb-4"><i class="bi bi-send" style="color:var(--accent)"></i> Send to All Users</h3>
+        <form id="massMsgForm">
+          <div class="form-group"><label>Target Role *</label><select class="input-glass" id="mmRole"><option value="all">All Users</option><option value="student">Students Only</option><option value="staff">Staff Only</option><option value="security">Security Only</option><option value="moderator">Moderators Only</option></select></div>
+          <div class="form-group"><label>Subject *</label><input type="text" class="input-glass" id="mmSubject" required placeholder="Message subject"></div>
+          <div class="form-group"><label>Message *</label><textarea class="input-glass" id="mmBody" rows="6" required placeholder="Write your message..."></textarea></div>
+          <div class="d-flex justify-between align-center">
+            <span class="text-sm text-muted" id="mmCount">Will be sent to 0 users</span>
+            <button type="submit" class="btn-glass btn-primary btn-lg"><i class="bi bi-send"></i> Send Message</button>
+          </div>
+        </form>
+      </div>${this.footer()}`;
+    const updateCount=()=>{const role=document.getElementById('mmRole').value;const q=role==='all'?"SELECT COUNT(*) as c FROM users WHERE user_id!=?" : "SELECT COUNT(*) as c FROM users WHERE role=? AND user_id!=?";const params=role==='all'?[Auth.user.user_id]:[role,Auth.user.user_id];const c=DB.q1(q,params);document.getElementById('mmCount').textContent=`Will be sent to ${c?c.c:0} users`};
+    document.getElementById('mmRole').onchange=updateCount;updateCount();
+    document.getElementById('massMsgForm').onsubmit=e=>{e.preventDefault();const role=document.getElementById('mmRole').value;const subj=document.getElementById('mmSubject').value.trim();const body=document.getElementById('mmBody').value.trim();const q=role==='all'?"SELECT user_id FROM users WHERE user_id!=?":"SELECT user_id FROM users WHERE role=? AND user_id!=?";const params=role==='all'?[Auth.user.user_id]:[role,Auth.user.user_id];const users=DB.q(q,params);users.forEach(u=>DB.notify(u.user_id,`[Announcement] ${subj}: ${body}`,'announcement'));DB.log(Auth.user.user_id,'mass_message','user',users.length,`Sent to ${role}: ${subj}`);      this.toast(`Message sent to ${users.length} users!`);this.go('admin_dashboard')};
+  }
+};
+
+async function boot(){
+  try{
+    await DB.init();
+    App.init();
+  }catch(e){
+    console.error('Boot error:',e);
+    document.getElementById('main-content').innerHTML=`<div style="text-align:center;padding:80px 20px">
+      <h1 style="color:#ef4444;margin-bottom:16px"><i class="bi bi-exclamation-triangle"></i> System Error</h1>
+      <p style="color:#94a3b8;margin-bottom:8px">${e.message||'Unknown error'}</p>
+      <p style="color:#64748b;margin-bottom:24px;font-size:0.85rem">Make sure you access this page via <code>http://localhost/lost-and-found/frontend/index.html</code></p>
+      <button class="btn-glass btn-primary" onclick="localStorage.clear();sessionStorage.clear();location.reload()"><i class="bi bi-arrow-clockwise"></i> Reset Data & Reload</button>
+    </div>`;
+  }
+}
+boot();
+</script>
+</body>
+</html>
