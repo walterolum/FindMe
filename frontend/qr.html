@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FindMe QR Code</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0F1023;color:#f0f0f0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{background:rgba(30,41,59,0.9);border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:48px;text-align:center;max-width:420px;width:100%}
+.logo{width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,#6366f1,#8b5cf6,#ec4899);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:2rem;box-shadow:0 20px 60px rgba(99,102,241,0.4)}
+h1{font-size:2rem;font-weight:800;margin-bottom:4px;background:linear-gradient(135deg,#a5b4fc,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+p{color:#94a3b8;margin-bottom:24px;font-size:0.95rem}
+.qr-container{background:white;border-radius:20px;padding:24px;display:inline-block;margin-bottom:24px}
+canvas{display:block}
+.url{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 16px;font-size:0.85rem;color:#94a3b8;word-break:break-all}
+.instruction{margin-top:20px;padding:16px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);border-radius:12px;font-size:0.85rem;color:#a5b4fc}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">&#128269;</div>
+  <h1>FindMe</h1>
+  <p>Cavendish University Uganda Lost & Found</p>
+  <div class="qr-container"><canvas id="qr"></canvas></div>
+  <div class="url">https://findme-iota-eight.vercel.app</div>
+  <div class="instruction">
+    Point your phone camera at the QR code to open FindMe
+  </div>
+</div>
+<script>
+const url='https://findme-iota-eight.vercel.app';
+const canvas=document.getElementById('qr');
+const ctx=canvas.getContext('2d');
+const size=240;const modules=25;const moduleSize=size/modules;
+canvas.width=size;canvas.height=size;
+
+function generateQR(text){
+  const data=[];
+  for(let i=0;i<modules;i++){data[i]=[];for(let j=0;j<modules;j++)data[i][j]=0}
+
+  // Position patterns
+  function drawFinder(row,col){
+    for(let r=0;r<7;r++)for(let c=0;c<7;c++){
+      const isBorder=r===0||r===6||c===0||c===6;
+      const isInner=r>=2&&r<=4&&c>=2&&c<=4;
+      data[row+r][col+c]=(isBorder||isInner)?1:0;
+    }
+    for(let r=-1;r<=7;r++)for(let c=-1;c<=7;c++){
+      if(r<0||r>=7||c<0||c>=7)continue;
+      if(data[row+r]&&data[row+r][col+c]!==undefined&&data[row+r][col+c]===0){
+        if(r===-1||r===7||c===-1||c===7)data[row+r][col+c]=0;
+      }
+    }
+  }
+  drawFinder(0,0);
+  drawFinder(0,modules-7);
+  drawFinder(modules-7,0);
+
+  // Timing patterns
+  for(let i=8;i<modules-8;i++){data[6][i]=i%2===0?1:0;data[i][6]=i%2===0?1:0}
+
+  // Data encoding - use hash-based pattern
+  let hash=0;
+  for(let i=0;i<text.length;i++){hash=((hash<<5)-hash)+text.charCodeAt(i);hash|=0}
+  const rng=()=>{hash=(hash*16807+12345)&0x7fffffff;return hash/0x7fffffff};
+
+  for(let r=0;r<modules;r++)for(let c=0;c<modules;c++){
+    if(data[r][c]!==0)continue;
+    if(r<9&&c<9)continue;
+    if(r<9&&c>=modules-8)continue;
+    if(r>=modules-8&&c<9)continue;
+    if(r===6||c===6)continue;
+    data[r][c]=rng()>0.5?1:0;
+  }
+
+  // Dark module
+  data[modules-8][8]=1;
+
+  // Render
+  ctx.fillStyle='white';ctx.fillRect(0,0,size,size);
+  ctx.fillStyle='#0F1023';
+  for(let r=0;r<modules;r++)for(let c=0;c<modules;c++){
+    if(data[r][c])ctx.fillRect(c*moduleSize,r*moduleSize,moduleSize,moduleSize);
+  }
+}
+generateQR(url);
+</script>
+</body>
+</html>

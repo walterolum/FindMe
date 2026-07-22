@@ -374,7 +374,9 @@ const App={
       admin_analytics:()=>Auth.can('view_analytics')?this.pgAdminAnalytics():this.go('login'),
       admin_backup:()=>Auth.can('export_data')?this.pgAdminBackup():this.go('login'),
       admin_settings:()=>Auth.can('manage_settings')?this.pgAdminSettings():this.go('login'),
-      admin_mass_msg:()=>Auth.can('send_mass_msg')?this.pgAdminMassMsg():this.go('login')
+      admin_mass_msg:()=>Auth.can('send_mass_msg')?this.pgAdminMassMsg():this.go('login'),
+      chat:()=>Auth.logged()?this.pgChat():this.go('login'),
+      chat_detail:()=>Auth.logged()?this.pgChatDetail():this.go('login')
     };
     const fn=m[this.page];if(fn)fn();else this.pgHome();this.nav();
   },
@@ -390,7 +392,7 @@ const App={
   catSel(sel=''){let o='<option value="">Select Category</option>';this.cats().forEach(c=>{o+=`<option value="${c.category_id}" ${c.category_id==sel?'selected':''}>${c.icon?`<i class="bi ${c.icon}"></i> `:''}${this.h(c.category_name)}</option>`});return`<select class="input-glass" id="category_id" required>${o}</select>`},
   badge(st){const m={pending:'badge-pending',resolved:'badge-resolved',returned:'badge-returned',approved:'badge-approved',rejected:'badge-rejected'};return`<span class="badge-3d ${m[st]||'badge-pending'}">${this.h(st)}</span>`},
   imgS(img){if(!img)return'';if(img.startsWith('data:')||img.startsWith('http'))return img;return'uploads/'+img},
-  footer(){return`<div class="footer-glass"><p>&copy; 2026 <span class="gradient-text fw-bold">FindMe</span> - Cavendish University Uganda Lost & Found Management System</p><p class="text-xs mt-2">Excellence Through Knowledge | Ggaba Road, Kampala, Uganda | +256 700 123 456</p></div>`},
+  footer(){return`<div class="footer-glass"><p>&copy; 2026 <span class="gradient-text fw-bold">FindMe</span> - Cavendish University Uganda Lost & Found Management System</p><p class="text-xs mt-2">Excellence Through Knowledge | Ggaba Road, Kampala, Uganda | +256 770595171</p></div>`},
   animDelay(i){return`animation-delay:${i*0.08}s`},
 
   nav(){
@@ -417,6 +419,9 @@ const App={
           <a href="#admin_mass_msg" style="display:block;padding:8px 12px;color:var(--text);text-decoration:none;border-radius:8px;font-size:0.85rem"><i class="bi bi-envelope"></i> Mass Message</a>
           ${Auth.can('manage_settings')?`<a href="#admin_settings" style="display:block;padding:8px 12px;color:var(--text);text-decoration:none;border-radius:8px;font-size:0.85rem"><i class="bi bi-sliders"></i> Settings</a>`:''}
         </div></div>
+        <a href="#report_lost"><i class="bi bi-flag"></i> Report Lost</a>
+        <a href="#report_found"><i class="bi bi-hand-index-thumb"></i> Report Found</a>
+        <a href="#chat"><i class="bi bi-chat-dots"></i> Chat</a>
         <a href="#admin_reports"><i class="bi bi-bar-chart"></i> Reports</a>
         <a href="#notifications"><i class="bi bi-bell"></i> ${nb2}</a>
         <a href="#messages"><i class="bi bi-envelope"></i> ${mb2}</a>
@@ -427,6 +432,8 @@ const App={
         <a href="#staff_found"><i class="bi bi-hand-index-thumb"></i> Found Items</a>
         <a href="#search"><i class="bi bi-search"></i> Search</a>
         <a href="#report_lost"><i class="bi bi-flag"></i> Report Lost</a>
+        <a href="#report_found"><i class="bi bi-hand-index-thumb"></i> Report Found</a>
+        <a href="#chat"><i class="bi bi-chat-dots"></i> Chat</a>
         <a href="#notifications"><i class="bi bi-bell"></i> ${nb2}</a>
         <a href="#messages"><i class="bi bi-envelope"></i> ${mb2}</a>
       </div>`;
@@ -436,6 +443,7 @@ const App={
         <a href="#security_verify"><i class="bi bi-patch-check"></i> Verify</a>
         <a href="#search"><i class="bi bi-search"></i> Search</a>
         <a href="#report_found"><i class="bi bi-hand-index-thumb"></i> Report Found</a>
+        <a href="#chat"><i class="bi bi-chat-dots"></i> Chat</a>
         <a href="#notifications"><i class="bi bi-bell"></i> ${nb2}</a>
       </div>`;
     }else{
@@ -445,6 +453,7 @@ const App={
         <a href="#report_found"><i class="bi bi-hand-index-thumb"></i> Report Found</a>
         <a href="#search"><i class="bi bi-search"></i> Search</a>
         <a href="#saved_items"><i class="bi bi-bookmark"></i> Saved</a>
+        <a href="#chat"><i class="bi bi-chat-dots"></i> Chat</a>
         <a href="#notifications"><i class="bi bi-bell"></i> ${nb2}</a>
         <a href="#messages"><i class="bi bi-envelope"></i> ${mb2}</a>
       </div>`;
@@ -931,7 +940,7 @@ const App={
         <div>
           <div class="card-3d mb-4 animate-in"><h3 class="fw-bold mb-3"><i class="bi bi-envelope" style="color:var(--accent)"></i> Contact Support</h3>
             <div class="mb-3"><label>Email</label><div class="input-glass" style="pointer-events:none;padding:12px 16px">findme@cavendish.ac.ug</div></div>
-            <div class="mb-3"><label>Phone</label><div class="input-glass" style="pointer-events:none;padding:12px 16px">+256 700 123 456</div></div>
+            <div class="mb-3"><label>Phone</label><div class="input-glass" style="pointer-events:none;padding:12px 16px">+256 770595171</div></div>
             <div class="mb-3"><label>Office</label><div class="input-glass" style="pointer-events:none;padding:12px 16px">Student Affairs Office, Main Campus</div></div>
             <div class="mb-3"><label>Hours</label><div class="input-glass" style="pointer-events:none;padding:12px 16px">Mon - Fri, 8:00 AM - 5:00 PM</div></div>
           </div>
@@ -1202,6 +1211,48 @@ const App={
     const updateCount=()=>{const role=document.getElementById('mmRole').value;const q=role==='all'?"SELECT COUNT(*) as c FROM users WHERE user_id!=?" : "SELECT COUNT(*) as c FROM users WHERE role=? AND user_id!=?";const params=role==='all'?[Auth.user.user_id]:[role,Auth.user.user_id];const c=DB.q1(q,params);document.getElementById('mmCount').textContent=`Will be sent to ${c?c.c:0} users`};
     document.getElementById('mmRole').onchange=updateCount;updateCount();
     document.getElementById('massMsgForm').onsubmit=e=>{e.preventDefault();const role=document.getElementById('mmRole').value;const subj=document.getElementById('mmSubject').value.trim();const body=document.getElementById('mmBody').value.trim();const q=role==='all'?"SELECT user_id FROM users WHERE user_id!=?":"SELECT user_id FROM users WHERE role=? AND user_id!=?";const params=role==='all'?[Auth.user.user_id]:[role,Auth.user.user_id];const users=DB.q(q,params);users.forEach(u=>DB.notify(u.user_id,`[Announcement] ${subj}: ${body}`,'announcement'));DB.log(Auth.user.user_id,'mass_message','user',users.length,`Sent to ${role}: ${subj}`);      this.toast(`Message sent to ${users.length} users!`);this.go('admin_dashboard')};
+  },
+
+  pgChat(){
+    const uid=Auth.user.user_id;
+    const users=DB.q("SELECT user_id,fullname,email,role,student_id FROM users WHERE user_id!=? AND status='active' ORDER BY fullname",[uid]);
+    const convos=DB.q(`SELECT m.*, u.fullname as other_name, u.user_id as other_id, u.role as other_role FROM messages m JOIN users u ON (CASE WHEN m.sender_id=? THEN m.receiver_id ELSE m.sender_id END)=u.user_id WHERE m.sender_id=? OR m.receiver_id=? GROUP BY other_id ORDER BY m.created_at DESC`,[uid,uid,uid]);
+    const convoMap={};convos.forEach(c=>{convoMap[c.other_id]=c});
+    let userList='';users.forEach((u,i)=>{
+      const lastMsg=convoMap[u.user_id];
+      const unread=lastMsg&&lastMsg.sender_id!==u.user_id?DB.q1("SELECT COUNT(*) as c FROM messages WHERE sender_id=? AND receiver_id=? AND is_read=0",[u.user_id,uid]).c:0;
+      const roleBadge=Auth.roleBadge(u.role);
+      userList+=`<a href="#chat_detail?id=${u.user_id}" style="text-decoration:none;color:var(--text)"><div class="card-3d mb-2 animate-in" style="${this.animDelay(i)};padding:14px;cursor:pointer"><div class="d-flex gap-3 align-center"><div class="nav-avatar" style="width:44px;height:44px;flex-shrink:0">${(u.fullname||'U').charAt(0)}</div><div class="flex-1" style="min-width:0"><div class="d-flex justify-between align-center"><span class="fw-bold text-sm">${this.h(u.fullname)}</span>${roleBadge}</div><p class="text-xs text-muted" style="display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;margin-top:2px">${lastMsg?this.h(lastMsg.message):'Start a conversation'}</p></div><div style="text-align:right;flex-shrink:0">${unread>0?`<span class="notif-badge">${unread}</span>`:''}${lastMsg?`<div class="text-xs text-muted">${lastMsg.created_at||''}</div>`:''}</div></div></div></a>`;
+    });
+    document.getElementById('main-content').innerHTML=`
+      <h2 class="page-title animate-in"><i class="bi bi-chat-dots gradient-text"></i> <span class="gradient-text">Chat</span></h2>
+      <div class="card-3d animate-in" style="animation-delay:.1s;max-width:700px">
+        <div class="form-group" style="margin-bottom:16px"><input type="text" class="input-glass" id="chatSearch" placeholder="Search users..." oninput="App.filterChatUsers()"></div>
+        <div id="chatUserList">${userList||'<div class="empty-state"><i class="bi bi-people"></i><p>No users found</p></div>'}</div>
+      </div>${this.footer()}`;
+  },
+  filterChatUsers(){
+    const q=(document.getElementById('chatSearch')?.value||'').toLowerCase();
+    document.querySelectorAll('#chatUserList .card-3d').forEach(el=>{
+      el.style.display=el.textContent.toLowerCase().includes(q)?'':'none';
+    });
+  },
+
+  pgChatDetail(){
+    const rid=parseInt(new URLSearchParams(location.hash.split('?')[1]).get('id'));
+    if(!rid){this.go('chat');return}
+    const uid=Auth.user.user_id;
+    const other=DB.q1("SELECT user_id,fullname,role,student_id,faculty FROM users WHERE user_id=?",[rid]);
+    if(!other){this.toast('User not found.','danger');this.go('chat');return}
+    const msgs=DB.q("SELECT m.*, u.fullname FROM messages m JOIN users u ON m.sender_id=u.user_id WHERE (m.sender_id=? AND m.receiver_id=?) OR (m.sender_id=? AND m.receiver_id=?) ORDER BY m.created_at ASC",[uid,rid,rid,uid]);
+    DB.run("UPDATE messages SET is_read=1 WHERE sender_id=? AND receiver_id=? AND is_read=0",[rid,uid]);
+    let bubbles='';msgs.forEach(m=>{const isSent=m.sender_id===uid;bubbles+=`<div class="chat-bubble ${isSent?'chat-sent':'chat-received'} animate-in">${this.h(m.message)}<div class="text-xs ${isSent?'':'text-muted'}" style="margin-top:4px;opacity:0.7">${m.created_at}</div></div>`});
+    document.getElementById('main-content').innerHTML=`
+      <div class="d-flex align-center mb-4"><button class="btn-glass" onclick="App.go('chat')"><i class="bi bi-arrow-left"></i></button><div class="d-flex align-center gap-3" style="margin-left:12px"><div class="nav-avatar" style="width:40px;height:40px;flex-shrink:0">${(other.fullname||'U').charAt(0)}</div><div><h2 class="page-title animate-in" style="margin:0;font-size:1.2rem">${this.h(other.fullname)}</h2><p class="text-xs text-muted">${Auth.roleBadge(other.role)} ${other.faculty?'&middot; '+this.h(other.faculty):''}</p></div></div></div>
+      <div class="card-3d animate-in" style="max-width:800px"><div id="chatMsgList" style="min-height:300px;max-height:500px;overflow-y:auto;padding:16px">${bubbles||'<div class="empty-state"><i class="bi bi-chat-dots"></i><p>Start the conversation</p></div>'}</div>
+      <div class="divider"></div><form id="chatForm" class="d-flex gap-2"><input type="text" class="input-glass flex-1" id="chatInput" placeholder="Type a message..." required><button type="submit" class="btn-glass btn-primary"><i class="bi bi-send"></i></button></form></div>${this.footer()}`;
+    const list=document.getElementById('chatMsgList');list.scrollTop=list.scrollHeight;
+    document.getElementById('chatForm').onsubmit=e=>{e.preventDefault();const txt=document.getElementById('chatInput').value.trim();if(!txt)return;DB.sendMsg(uid,rid,txt);document.getElementById('chatInput').value='';DB.notify(rid,`New message from ${Auth.user.fullname}`,'message','#chat_detail?id='+uid);this.pgChatDetail()};
   }
 };
 
